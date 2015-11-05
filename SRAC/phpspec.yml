@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: SRAC
+        psr4_prefix: SRAC
+        src_path: app
