@@ -11,6 +11,15 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+
+
+    'user' => 'Usuario: ',
+    'email' => 'Email: ',
+    'password' => 'Contraseña: ',
+    'password2' => 'Confirmar Contraseña: ',
+    'login' => 'Ingresa!',
+    'register' => 'Registrate!',
+
     'failed' => 'Estas credenciales no coinciden con nuestros registros.',
     'throttle' => 'Demasiados intentos de acceso. Por favor intente nuevamente en :seconds segundos.',
 ];
