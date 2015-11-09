@@ -12,6 +12,6 @@
 */
 
 Route::get('/', 'FrontController@index');
+Route::get('contact', 'FrontController@contact');
 
-Route::get('/contact', 'FrontController@contact');
-Route::get('/register', 'FrontController@register');
+Route::resource('usuario', 'UsuarioController');

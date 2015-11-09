@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>SRAC</title>
-</head>
+    <link rel="stylesheet" href="{{asset('assets/css/bootstrap.css')}}"></head>
 
 <body>
 
@@ -16,6 +16,7 @@
     <hr>
 
     @yield('contenido')
+    <script src="{{asset('assets/js/bootstrap.js')}}"></script>
 </body>
 
 </html>

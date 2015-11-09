@@ -1,10 +1,7 @@
 @extends('layouts.principal')
 
 @section('navegador')
-    <a href="/">@lang('navbar.home')</a>
-    <a href="contact">@lang('navbar.contact')</a>
-
-
+    @include('partials.nav')
 @endsection
 
 
