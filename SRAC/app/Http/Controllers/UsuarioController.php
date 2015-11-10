@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use SRAC\Http\Requests;
 use SRAC\Http\Controllers\Controller;
+use SRAC\User;
 
 class UsuarioController extends Controller
 {
@@ -26,7 +27,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        return view('register');
+        return view('create');
     }
 
     /**
@@ -37,6 +38,10 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
+        $user = new User($request->all());
+        $user->role = 'cliente';
+        $user->password = bcrypt($user->password);
+        $user->save();
     }
 
     /**
@@ -47,7 +52,7 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
