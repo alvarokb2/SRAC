@@ -8,6 +8,7 @@ use SRAC\Http\Requests;
 use SRAC\Http\Controllers\Controller;
 use SRAC\User;
 
+
 class UsuarioController extends Controller
 {
     /**
@@ -18,6 +19,10 @@ class UsuarioController extends Controller
     public function index()
     {
         //
+    }
+
+    public function login(Request $request){
+
     }
 
     /**
@@ -88,4 +93,5 @@ class UsuarioController extends Controller
     {
         //
     }
+
 }

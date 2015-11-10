@@ -2,9 +2,7 @@
 
 @section('navegador')
     @include('partials.nav')
-
 @endsection
-
 
 @section('contenido')
     <h3>Formulario de Registro</h3>
@@ -47,8 +45,6 @@
     <div class="form-group">
         {!! Form::submit( 'Registrar', ['class' => 'btn btn-primary']) !!}
     </div>
-
-
 
     {!! Form::close() !!}
 

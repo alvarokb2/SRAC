@@ -4,23 +4,43 @@
     @include('partials.nav')
 @endsection
 
-
 @section('contenido')
     <h3>Información</h3>
     <p>
         informacion del club
     </p>
+
+    {!! Form::open(['route' => 'usuario.login', 'method' => 'POST']) !!}
+
     <div class="form-group">
-    <form action="login" method="post" class="form-horizontal">
-        <label class="control-label" for="usuario">@lang('auth.user')</label>
-        <input type="text" name="textUsuario" id="TextUsuario">
-        <label class="control-label" for="password">@lang('auth.password')</label>
-        <input type="password" name="password" id="password">
-        <button class="btn-primary" type="submit">@lang('auth.login')</button>
-    </form>
+        {!! Form::label('name', 'Nombre') !!}
+        {!! Form::text('name', null, [
+        'class'         => 'form-control',
+        'placeholder'   => 'Nombre de usuario',
+        'required']) !!}
     </div>
-    <div>
+
+    <div class="form-group">
+        {!! Form::label('email', 'Email') !!}
+        {!! Form::password('password', [
+        'class'         => 'form-control',
+        'placeholder'   => 'Contraseña',
+        'required']) !!}
+    </div>
+
+    <div class="form-group">
+        {!! Form::submit( 'Ingresar', ['class' => 'btn btn-primary']) !!}
+    </div>
+
+    <div class="form-group">
         Aun no tienes tu cuenta? <a href="{{Route('usuario.create')}}">@lang('auth.register')</a>
     </div>
+
+
+
+    {!! Form::close() !!}
+
+
+
 
 @endsection

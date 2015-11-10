@@ -15,3 +15,7 @@ Route::get('/', 'FrontController@index');
 Route::get('contact', 'FrontController@contact');
 
 Route::resource('usuario', 'UsuarioController');
+Route::post('usuario/login', [
+    'uses'  => 'UsuarioController@login',
+    'as'    => 'usuario.login'
+]);
