@@ -1,6 +1,10 @@
 @extends('layouts.principal')
 
+@section('styles')
+
+    @endsection
 @section('navegador')
+    <link rel="stylesheet" href="{{asset('assets/css/styles.css')}}">
     @include('partials.nav')
 @endsection
 
