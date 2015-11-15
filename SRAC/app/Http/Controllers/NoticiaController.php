@@ -2,16 +2,14 @@
 
 namespace SRAC\Http\Controllers;
 
-use Faker\Provider\Barcode;
 use Illuminate\Http\Request;
 
-use Redirect;
+use Illuminate\Support\Facades\Redirect;
 use SRAC\Http\Requests;
 use SRAC\Http\Controllers\Controller;
-use SRAC\User;
+use SRAC\Noticia;
 
-
-class UsuarioController extends Controller
+class NoticiaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +18,8 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        $user = User::all();
-        return view('encargado.usuarios.usuarios')->with('users', $user);
+        $noticias = Noticia::all();
+        return view('encargado.admin.noticias.noticias')->with('noticias', $noticias);
     }
 
     /**
@@ -31,7 +29,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        return view('create');
+        return view('encargado.admin.noticias.create');
     }
 
     /**
@@ -42,15 +40,12 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->password == $request->password2) {
+        $noticia = new Noticia();
+        $noticia->titulo = $request->titulo;
+        $noticia->descripcion = $request->descripcion;
 
-            $user = new User($request->all());
-            $user->role = 'cliente';
-            $user->password = bcrypt($user->password);
-            $user->save();
-        }
-
-        return Redirect::route('/');
+        $noticia->save();
+        return Redirect::route('empleado.admin.noticias');
     }
 
     /**
@@ -61,7 +56,7 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-
+        //
     }
 
     /**
@@ -72,8 +67,8 @@ class UsuarioController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        return view('encargado.usuarios.edit')->with('user', $user);
+        $noticia = Noticia::find($id);
+        return view('encargado.admin.noticias.edit')->with('noticia', $noticia);
     }
 
     /**
@@ -85,15 +80,13 @@ class UsuarioController extends Controller
      */
     public function update(Request $request)
     {
-        $user = User::find($request->id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->role = $request->role;
+        $noticia = Noticia::find($request->id);
+        $noticia->titulo = $request->titulo;
+        $noticia->descripcion = $request->descripcion;
 
-        $user->save();
-        $user = User::all();
-        return redirect('empleado/usuarios')->with('users', $user);
+        $noticia->save();
+        $noticias = Noticia::all();
+        return Redirect::route('empleado.admin.noticias')->with('noticias', $noticias);
     }
 
     /**
@@ -104,9 +97,8 @@ class UsuarioController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
-        $users = User::all();
-        return Redirect::route('empleado.usuarios')->with('users',$users);
+        Noticia::destroy($id);
+        $noticias = Noticia::all();
+        return Redirect::route('empleado.admin.noticias')->with('noticias', $noticias);
     }
-
 }
