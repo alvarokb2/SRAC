@@ -8,6 +8,7 @@
 @endsection
 
 @section('contenido')
+    @include('alerts.errors')
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -30,7 +31,7 @@
                         <br>
                         <img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/" />
                         <br>
-                        {!! Form::open(['route' => 'empleado.usuarios', 'method' => 'POST']) !!}
+                        {!! Form::open(['route' => 'login.store', 'method' => 'POST']) !!}
 
                         <div class="form-group">
                             {!! Form::label('name', 'Nombre') !!}

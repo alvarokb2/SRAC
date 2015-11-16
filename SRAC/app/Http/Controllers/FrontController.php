@@ -17,4 +17,9 @@ class FrontController extends Controller
     public function register(){
         return view('register');
     }
+
+    public function historial(){
+        return view('cliente.historial.historial');
+    }
+
 }

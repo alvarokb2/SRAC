@@ -15,19 +15,19 @@
                             Horario
                         </th>
                         <th>
-                            {!! date("j-n")!!}
+                            {!! date("j-n",time()) !!}
                         </th>
                         <th>
-                            {!! date("j-n",time()+84600)!!}
+                            {!! date("j-n",time()+86400)!!}
                         </th>
                         <th>
-                            {!! date("j-n",time()+(84600*2))!!}
+                            {!! date("j-n",time()+(86400*2))!!}
                         </th>
                         <th>
-                            {!! date("j-n",time()+(84600*3))!!}
+                            {!! date("j-n",time()+(86400*3))!!}
                         </th>
                         <th>
-                            {!! date("j-n",time()+(84600*4))!!}
+                            {!! date("j-n",time()+(86400*4))!!}
                         </th>
                     </tr>
                     </thead>
@@ -36,7 +36,12 @@
                     <tr>
                         <td>{{($j + 9).':00'}}</td>
                         @for($i = 0; $i <5; $i++)
-                                <td><a href="#" class="btn btn-success">Disponible</a></td>
+                                <td>{!! Form::open(['route' => 'empleado.reservas.store', 'method' => 'POST']) !!}
+                                    <input type="hidden" name="hora" value="{{ $j+9 . ':00' }}">
+                                    <input type="hidden" name="fecha" value="{{$i}}">
+                                    <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                                    {!! Form::submit( 'Reservar', ['class' => 'btn btn-success']) !!}
+                                    {!! Form::close() !!}</td>
                         @endfor
                     </tr>
                     @endfor

@@ -40,4 +40,12 @@ class User extends Model implements AuthenticatableContract,
     public function reservas(){
         return $this->hasMany('SRAC\Reserva');
     }
+
+    public function delete(){
+        foreach($this->reservas as $reserva){
+            $reserva->delete();
+        }
+        return parent::delete();
+    }
+
 }

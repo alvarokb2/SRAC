@@ -4,8 +4,11 @@ namespace SRAC\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
+use Illuminate\Support\Facades\Redirect;
 use SRAC\Http\Requests;
 use SRAC\Http\Controllers\Controller;
+use SRAC\Reserva;
 
 class ReservaController extends Controller
 {
@@ -16,7 +19,10 @@ class ReservaController extends Controller
      */
     public function index()
     {
-        //
+        if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio'){
+            return view('cliente.historial.historial');
+        }
+
     }
 
     /**
@@ -26,7 +32,15 @@ class ReservaController extends Controller
      */
     public function create()
     {
-        //
+        if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio') {
+            return view('cliente.disponibilidad.disponibilidad');
+        }
+        elseif(Auth::user()->role == 'administrador' or Auth::user()->role == 'encargado'){
+            return view('encargado.disponibilidad.disponibilidad');
+        }
+        else{
+            return "hola";
+        }
     }
 
     /**
@@ -37,7 +51,13 @@ class ReservaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $reserva = new Reserva();
+        $reserva->fecha = date('j-n-y', time() + ($request->fecha * 86400));
+        $reserva->hora = $request->hora;
+        $reserva->user_id = $request->user_id;
+        $reserva->save();
+
+        return "reserva creada";
     }
 
     /**
@@ -48,7 +68,7 @@ class ReservaController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**

@@ -1,2 +1,2 @@
-    <a href="/">@lang('navbar.home')</a>
-    <a href="contact">@lang('navbar.contact')</a>
+    <a href="{{route('/')}}">@lang('navbar.home')</a>
+    <a href="{{route('contact')}}">@lang('navbar.contact')</a>
