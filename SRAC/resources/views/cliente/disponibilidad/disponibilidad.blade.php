@@ -1,7 +1,54 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: alvarokb2
- * Date: 10-11-15
- * Time: 13:48
- */
+@extends('layouts.principal')
+
+@section('contenido')
+    <div class="container-fluid">
+        <div class="row">
+            <h3>Disponibilidad</h3>
+            <div class="col-md-2">
+                @include('cliente.partials.menu')
+            </div>
+            <div class="col-md-10">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                            Horario
+                        </th>
+                        <th>
+                            {!! date("j-n")!!}
+                        </th>
+                        <th>
+                            {!! date("j-n",time() + 86400)!!}
+                        </th>
+                        <th>
+                            {!! date("j-n",time() + ( 86400 * 2 ) )!!}
+                        </th>
+                        <th>
+                            {!! date("j-n",time() + ( 86400 * 3 ) )!!}
+                        </th>
+                        <th>
+                            {!! date("j-n",time() + ( 86400 * 4 ) )!!}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @for($j = 0;$j <15;$j++)
+                        <tr>
+                            <td>{{($j + 9).':00'}}</td>
+                            @for($i = 0; $i <5; $i++)
+                                <td>{!! Form::open(['route' => 'cliente.reservas.store', 'method' => 'POST']) !!}
+                                    <input type="hidden" name="hora" value="{{ $j+9 . ':00' }}">
+                                    <input type="hidden" name="fecha" value="{{$i}}">
+                                    <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                                    {!! Form::submit( 'Reservar', ['class' => 'btn btn-success']) !!}
+                                    {!! Form::close() !!}</td>
+                            @endfor
+                        </tr>
+                    @endfor
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@endsection

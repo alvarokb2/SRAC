@@ -11,6 +11,8 @@
 |
 */
 
+
+//rutas usuario no autenticado
 Route::get('/', [
     'uses'  => 'FrontController@index',
     'as'    => '/'
@@ -20,7 +22,50 @@ Route::get('contact', [
     'as'    => 'contact'
 ]);
 
+
+//rutas autenticacion
+Route::resource('login', 'LoginController');
+Route::get('logout', [
+    'uses'  => 'LoginController@Logout',
+    'as'    => 'logout'
+]);
+
+
 Route::resource('usuario', 'UsuarioController');
+
+
+//grupo de rutas clientes
+
+Route::group(['prefix' => 'cliente'], function(){
+
+    //rutas comunes cliente, socio
+
+    Route::resource('reserva', 'ReservaController', [
+        'names' => [
+            'index'     => 'cliente.reservas',
+            'create'    => 'cliente.reservas.create',
+            'store'     => 'cliente.reservas.store',
+        ]
+    ]);
+/*
+    Route::get('reserva/historial', [
+        'uses'  => 'ReservaController@index',
+        'as'    => 'cliente.reservas.historial'
+    ]);
+*/
+
+    //rutas socio
+
+    Route::group(['prefix' => 'socio'], function(){
+
+        Route::get('noticias',[
+            'uses'  => 'NoticiaController@socioNoticias',
+            'as'    => 'cliente.socio.noticias'
+        ]);
+    });
+});
+
+
 
 //grupo de rutas empleados
 Route::group(['prefix' => 'empleado'], function(){
@@ -44,9 +89,21 @@ Route::group(['prefix' => 'empleado'], function(){
 
 
     //manipulacion horarios
-    Route::get('disponibilidad',function(){
-        return view('encargado.disponibilidad.disponibilidad');
-    });
+    Route::get('disponibilidad', [
+        'uses'  => 'FrontController@disponibilidad',
+        'as'    => 'empleado.disponibilidad'
+    ]);
+
+    Route::resource('reserva', 'ReservaController', [
+        'names' => [
+            'index'     => 'empleado.reservas',
+            'create'    => 'empleado.reservas.create',
+            'store'     => 'empleado.reservas.store',
+            'show'      => 'empleado.reservas.show',
+            'edit'      => 'empleado.reservas.edit',
+            'update'    => 'empleado.reservas.update'
+            ]
+        ]);
 
 
     Route::group(['prefix' => 'admin'], function(){

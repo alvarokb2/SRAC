@@ -5,7 +5,7 @@
         <div class="row">
             <h3>Reservas</h3>
             <div class="col-md-2">
-                @include('administrador.partials.menu')
+                @include('encargado.partials.menu')
             </div>
             <div class="col-md-10">
                 <table class="table">
@@ -32,10 +32,10 @@
                     @foreach($reservas as $reserva)
                         <tr>
                             <td>{{$reserva->id}}</td>
+                            <td>{{$reserva->hora}}</td>
                             <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><a class="btn btn-primary">Ver</a></td>
+                            <td>{{$reserva->estado}}</td>
+                            <td><a href="{{route('empleado.reservas.edit',$reserva->id)}}" class="btn btn-primary">Ver</a></td>
 
 
                         </tr>

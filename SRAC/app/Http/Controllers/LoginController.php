@@ -2,14 +2,18 @@
 
 namespace SRAC\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Redirect;
+use Auth;
+use Session;
+use Redirect;
+use SRAC\Http\Requests\LoginRequest;
 use SRAC\Http\Requests;
 use SRAC\Http\Controllers\Controller;
-use SRAC\Noticia;
+use SRAC\User;
 
-class NoticiaController extends Controller
+class LoginController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +22,7 @@ class NoticiaController extends Controller
      */
     public function index()
     {
-        $noticias = Noticia::all();
-        return view('encargado.admin.noticias.noticias')->with('noticias', $noticias);
+        //
     }
 
     /**
@@ -29,7 +32,7 @@ class NoticiaController extends Controller
      */
     public function create()
     {
-        return view('encargado.admin.noticias.create');
+        //
     }
 
     /**
@@ -38,19 +41,25 @@ class NoticiaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(LoginRequest $request)
     {
-        $noticia = new Noticia();
-        $noticia->titulo = $request->titulo;
-        $noticia->descripcion = $request->descripcion;
 
-        $noticia->save();
-        return Redirect::route('empleado.admin.noticias');
+        if(Auth::attempt(['name' => $request['name'], 'password' => $request['password']])){
+
+            if(Auth::user()->role == 'administrador' or Auth::user()->role == 'encargado') {
+                return Redirect::route('empleado.usuarios');
+            }
+            else{
+                return Redirect::route('cliente.reservas');
+            }
+        }
+        Session::flash('message-error', 'Datos son incorrectos');
+        return Redirect::route('/');
     }
 
-    public function socioNoticias(){
-        $noticias = Noticia::all();
-        return view('cliente.socio.noticias.noticias')->with('noticias', $noticias);
+    public function logout(){
+        Auth::logout();
+        return Redirect::route('/');
     }
 
     /**
@@ -72,8 +81,7 @@ class NoticiaController extends Controller
      */
     public function edit($id)
     {
-        $noticia = Noticia::find($id);
-        return view('encargado.admin.noticias.edit')->with('noticia', $noticia);
+        //
     }
 
     /**
@@ -83,15 +91,9 @@ class NoticiaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $noticia = Noticia::find($request->id);
-        $noticia->titulo = $request->titulo;
-        $noticia->descripcion = $request->descripcion;
-
-        $noticia->save();
-        $noticias = Noticia::all();
-        return Redirect::route('empleado.admin.noticias')->with('noticias', $noticias);
+        //
     }
 
     /**
@@ -102,8 +104,6 @@ class NoticiaController extends Controller
      */
     public function destroy($id)
     {
-        Noticia::destroy($id);
-        $noticias = Noticia::all();
-        return Redirect::route('empleado.admin.noticias')->with('noticias', $noticias);
+        //
     }
 }

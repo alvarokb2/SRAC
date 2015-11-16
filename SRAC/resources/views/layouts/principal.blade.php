@@ -22,23 +22,25 @@
             </h3>
             <ul class="nav nav-tabs">
                 <li>
-                    <a href="{{route('/')}}">Home</a>
+                    @if(Auth::user())
+                        @if(Auth::user()->role == 'administrador' or Auth::user()->role == 'encargado')
+                            <a href="{{route('empleado.usuarios')}}">Home</a>
+                        @elseif(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio')
+                            <a href="{{route('cliente.reservas')}}">Home</a>
+                        @endif
+                    @else
+                        <a href="{{route('/')}}">Home</a>
+                    @endif
                 </li>
                 <li>
                     <a href="{{route('contact')}}">Contacto</a>
                 </li>
-                <li>
-                    <a href="{{route('/')}}">Ayuda</a>
-                </li>
                 @if(Auth::user())
                     <li class="dropdown pull-right">
-                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{Auth::user()}}<strong class="caret"></strong></a>
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{Auth::user()->name}}<strong class="caret"></strong></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#">Mi cuenta</a>
-                            </li>
-                            <li>
-                                <a href="#">Salir</a>
+                                <a href="{{route('logout')}}">Salir</a>
                             </li>
                         </ul>
                     </li>

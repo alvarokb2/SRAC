@@ -23,6 +23,7 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
+    private $RedirectTo = '/';
     /**
      * Create a new authentication controller instance.
      *
@@ -32,6 +33,7 @@ class AuthController extends Controller
     {
         $this->middleware('guest', ['except' => 'getLogout']);
     }
+
 
     /**
      * Get a validator for an incoming registration request.
@@ -64,6 +66,6 @@ class AuthController extends Controller
     }
 
     protected function getLogin(){
-        return view('auth.login');
+        return view('home');
     }
 }

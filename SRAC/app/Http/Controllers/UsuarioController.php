@@ -48,9 +48,14 @@ class UsuarioController extends Controller
             $user->role = 'cliente';
             $user->password = bcrypt($user->password);
             $user->save();
+
+            return Redirect::route('/')->with('mensaje', 'Usuario registrado correctamente');
+
+        }
+        else{
+            return Redirect::route('usuario.create');
         }
 
-        return Redirect::route('/');
     }
 
     /**
@@ -88,7 +93,9 @@ class UsuarioController extends Controller
         $user = User::find($request->id);
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = bcrypt($request->password);
+        if($request->password != '') {
+            $user->password = bcrypt($request->password);
+        }
         $user->role = $request->role;
 
         $user->save();
@@ -104,7 +111,8 @@ class UsuarioController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
+        $user = User::find($id);
+        $user->delete();
         $users = User::all();
         return Redirect::route('empleado.usuarios')->with('users',$users);
     }

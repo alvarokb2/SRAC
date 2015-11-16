@@ -2,6 +2,7 @@
 
 
 @section('contenido')
+
     <h3>Formulario de Registro</h3>
 
     <div class="container-fluid">
