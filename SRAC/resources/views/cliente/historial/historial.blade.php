@@ -23,6 +23,7 @@
                     </tr>
                     </thead>
                     <tbody>
+<<<<<<< HEAD
                         @foreach($reservas as $reserva)
                             <tr>
                                 <td>{{$reserva->fecha}}</td>
@@ -30,6 +31,9 @@
                                 <td><p class="btn btn-warning">{{$reserva->estado}}</p> </td>
                             </tr>
                         @endforeach
+=======
+
+>>>>>>> 194c60fdf897f4038e6610d588ee1f58167c658b
                     </tbody>
                 </table>
             </div>
