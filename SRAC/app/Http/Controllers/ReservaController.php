@@ -4,6 +4,7 @@ namespace SRAC\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Session;
 use Auth;
 use Illuminate\Support\Facades\Redirect;
 use SRAC\Http\Requests;
@@ -21,7 +22,7 @@ class ReservaController extends Controller
     {
         if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio'){
 
-            $reservas = Reserva::all()->where('user_id', Auth::user()->id);
+            $reservas = Reserva::where('user_id', Auth::user()->id)->orderBy('fecha', 'desc')->get();
 
             return view('cliente.historial.historial')->with('reservas', $reservas);
         }
@@ -36,7 +37,9 @@ class ReservaController extends Controller
     public function create()
     {
         if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio') {
-            return view('cliente.disponibilidad.disponibilidad');
+
+            $reserva = new Reserva;
+            return view('cliente.disponibilidad.disponibilidad')->with('reserva', $reserva);
         }
         elseif(Auth::user()->role == 'administrador' or Auth::user()->role == 'encargado'){
             return view('encargado.disponibilidad.disponibilidad');
@@ -54,19 +57,20 @@ class ReservaController extends Controller
      */
     public function store(Request $request)
     {
-        $reserva = new Reserva();
-        $reserva->fecha = date('j-n-y', time() + ($request->fecha * 86400));
-        $reserva->hora = $request->hora;
-        if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio') {
-            $reserva->estado = 'pendiente';
-        }
-        else{
-            $reserva->estado = 'completada';
-        }
-        $reserva->user_id = $request->user_id;
-        $reserva->save();
+            $reserva = new Reserva();
+            $reserva->fecha = date('j-n-y', time() + ($request->fecha * 86400));
+            $reserva->hora = $request->hora;
+            if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio') {
+                $reserva->estado = 'pendiente';
+            }
+            else{
+                $reserva->estado = 'completada';
+            }
+            $reserva->user_id = $request->user_id;
+            $reserva->save();
 
-        return Redirect::route('empleado.reservas');
+            return Redirect::route('empleado.reservas');
+
     }
 
     /**

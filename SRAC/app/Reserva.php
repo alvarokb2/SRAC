@@ -3,6 +3,7 @@
 namespace SRAC;
 
 use Illuminate\Database\Eloquent\Model;
+use User;
 
 
 class Reserva extends Model
@@ -19,6 +20,19 @@ class Reserva extends Model
         $reserva->hora = $hora;
         $reserva->user_id = $id;
         $reserva->save();
+    }
+
+    public function disponibilidad($fecha, $hora){
+        $response = Reserva::where('fecha', '=' ,$fecha)
+                            ->where('hora', '=' , $hora)
+                            ->count();
+        //el numero de canchas es 7
+        if($response < 2){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 }

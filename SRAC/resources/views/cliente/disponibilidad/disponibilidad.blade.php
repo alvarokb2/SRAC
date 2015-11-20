@@ -40,7 +40,13 @@
                                     <input type="hidden" name="hora" value="{{ $j+9 . ':00' }}">
                                     <input type="hidden" name="fecha" value="{{$i}}">
                                     <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
-                                    {!! Form::submit( 'Reservar', ['class' => 'btn btn-success']) !!}
+
+                                    @if($reserva->disponibilidad( date('j-n-y', time() + ($i * 86400)), $j+9 . ':00'))
+                                        {!! Form::submit( 'Disponible', ['class' => 'btn btn-success']) !!}
+                                    @else
+                                        <div class="btn btn-danger">No Disponible</div>
+                                    @endif
+
                                     {!! Form::close() !!}</td>
                             @endfor
                         </tr>
