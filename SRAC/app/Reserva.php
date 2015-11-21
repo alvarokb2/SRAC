@@ -3,7 +3,6 @@
 namespace SRAC;
 
 use Illuminate\Database\Eloquent\Model;
-use User;
 
 
 class Reserva extends Model
@@ -26,13 +25,8 @@ class Reserva extends Model
         $response = Reserva::where('fecha', '=' ,$fecha)
                             ->where('hora', '=' , $hora)
                             ->count();
-        //el numero de canchas es 7
-        if($response < 2){
-            return true;
-        }
-        else{
-            return false;
-        }
+        //el numero de canchas es 2
+        return $response < 2;
     }
 
 }

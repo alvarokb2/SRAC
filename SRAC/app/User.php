@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
+
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
                                     CanResetPasswordContract
@@ -47,6 +48,37 @@ class User extends Model implements AuthenticatableContract,
         }
         return parent::delete();
     }
-    
 
+    public function getDias(){
+        switch($this->role){
+            case 'cliente':
+                return 3;
+                break;
+            case 'socio':
+                return 6;
+                break;
+            default:
+                return 15;
+                break;
+
+        }
+
+    }
+
+    public function disponibilidad($fecha, $hora){
+        $pendiente = $this->reservas()->where('estado' , 'pendiente')->count();
+
+        if($pendiente > 0){
+            $response = $this->reservas()->where('fecha', '=', $fecha)->where('hora','=', $hora)->where('estado', '=', 'pendiente')->count();
+            if($response > 0){
+                return 0;
+            }
+            else{
+                return 1;
+            }
+        }
+        else{
+            return 2;
+        }
+    }
 }

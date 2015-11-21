@@ -22,7 +22,7 @@ class ReservaController extends Controller
     {
         if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio'){
 
-            $reservas = Reserva::where('user_id', Auth::user()->id)->orderBy('fecha', 'desc')->get();
+            $reservas = Reserva::where('user_id', Auth::user()->id)->orderBy('fecha', 'desc')->orderBy('estado', 'desc' )->get();
 
             return view('cliente.historial.historial')->with('reservas', $reservas);
         }
@@ -57,19 +57,25 @@ class ReservaController extends Controller
      */
     public function store(Request $request)
     {
+        if(Auth::user()->disponibilidad($request->fecha, $request->hora) == 2) {
+
             $reserva = new Reserva();
-            $reserva->fecha = date('j-n-y', time() + ($request->fecha * 86400));
+            $reserva->fecha = $request->fecha;
             $reserva->hora = $request->hora;
-            if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio') {
+            if (Auth::user()->role == 'cliente' or Auth::user()->role == 'socio') {
                 $reserva->estado = 'pendiente';
-            }
-            else{
+            } else {
                 $reserva->estado = 'completada';
             }
             $reserva->user_id = $request->user_id;
             $reserva->save();
 
-            return Redirect::route('empleado.reservas');
+            return Redirect::route('cliente.reservas');
+        }
+        else{
+            Session::flash('mensaje', 'Tienes reservas pendientes');
+            return Redirect::route('cliente.reservas.create');
+        }
 
     }
 
