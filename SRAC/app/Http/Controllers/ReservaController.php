@@ -20,6 +20,7 @@ class ReservaController extends Controller
      */
     public function index()
     {
+        Auth::user()->castigar();
         if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio'){
 
             $reservas = Reserva::where('user_id', Auth::user()->id)->orderBy('fecha', 'desc')->orderBy('estado', 'desc' )->get();

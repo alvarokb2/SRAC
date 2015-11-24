@@ -81,4 +81,14 @@ class User extends Model implements AuthenticatableContract,
             return 2;
         }
     }
+
+    public function castigar(){
+        $actual = date('Y-n-j', time());
+
+        $response = $this->reservas()->where('estado', 'pendiente')->where('fecha', '<', $actual)->get();
+        foreach($response as $reserva){
+            $reserva->estado = 'perdida';
+            $reserva->update();
+        }
+    }
 }
