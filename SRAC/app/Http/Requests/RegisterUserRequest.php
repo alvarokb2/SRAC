@@ -4,7 +4,7 @@ namespace SRAC\Http\Requests;
 
 use SRAC\Http\Requests\Request;
 
-class LoginRequest extends Request
+class RegisterUserRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,9 @@ class LoginRequest extends Request
     {
         return [
             'name' => 'min:4|max:120|required',
-            'password' => 'required|min:6'
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required'
         ];
     }
 }

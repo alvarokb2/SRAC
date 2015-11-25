@@ -5,8 +5,10 @@ namespace SRAC\Http\Controllers;
 use Faker\Provider\Barcode;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Session;
 use Redirect;
 use SRAC\Http\Requests;
+use SRAC\Http\Requests\RegisterUserRequest;
 use SRAC\Http\Controllers\Controller;
 use SRAC\User;
 
@@ -40,22 +42,15 @@ class UsuarioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RegisterUserRequest $request)
     {
-        if($request->password == $request->password2) {
-
-            $user = new User($request->all());
-            $user->role = 'cliente';
-            $user->password = bcrypt($user->password);
-            $user->save();
-
-            return Redirect::route('/')->with('mensaje', 'Usuario registrado correctamente');
-
-        }
-        else{
-            return Redirect::route('usuario.create');
-        }
-
+        User::create([
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'password'  => bcrypt($request->password)
+        ]);
+        Session::flash('message-success','Usuario registrado correctamente');
+        return Redirect::route('/');
     }
 
     /**

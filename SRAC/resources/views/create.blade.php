@@ -7,6 +7,7 @@
 
     <div class="container-fluid">
         <div class="row">
+            @include('alerts.register.errors')
             <div class="col-md-8">
 
 
@@ -24,24 +25,24 @@
                     {!! Form::label('email', 'Email') !!}
                     {!! Form::email('email', null, [
                     'class'         => 'form-control',
-                    'placeholder'   => 'ejemplo@mail.com',
-                    'required']) !!}
+                    'placeholder'   => 'ejemplo@mail.com'])
+                    !!}
                 </div>
 
                 <div class="form-group">
                     {!! Form::label('password', 'Contraseña') !!}
                     {!! Form::password('password',[
                     'class'         => 'form-control',
-                    'placeholder'   => 'Contraseña',
-                    'required']) !!}
+                    'placeholder'   => 'Contraseña'])
+                    !!}
                 </div>
 
                 <div class="form-group">
-                    {!! Form::label('password2', 'Confirmar contraseña') !!}
-                    {!! Form::password('password2',[
+                    {!! Form::label('password_confirmation', 'Confirmar contraseña') !!}
+                    {!! Form::password('password_confirmation',[
                     'class'         => 'form-control',
-                    'placeholder'   => 'Confirmar contraseña',
-                    'required']) !!}
+                    'placeholder'   => 'Confirmar contraseña'])
+                    !!}
                 </div>
 
                 <div class="form-group">

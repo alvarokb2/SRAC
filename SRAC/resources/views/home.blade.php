@@ -8,7 +8,9 @@
 @endsection
 
 @section('contenido')
-    @include('alerts.errors')
+    @include('alerts.auth.errors')
+    @include('alerts.register.errors')
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
