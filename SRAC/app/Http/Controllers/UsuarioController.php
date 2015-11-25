@@ -95,6 +95,8 @@ class UsuarioController extends Controller
 
         $user->save();
         $user = User::all();
+        Session::flash('message-success', 'Usuario editado correctamente');
+
         return redirect('empleado/usuarios')->with('users', $user);
     }
 
@@ -109,6 +111,8 @@ class UsuarioController extends Controller
         $user = User::find($id);
         $user->delete();
         $users = User::all();
+        Session::flash('message-success', 'Usuario eliminado correctamente');
+
         return Redirect::route('empleado.usuarios')->with('users',$users);
     }
 

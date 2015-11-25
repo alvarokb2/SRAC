@@ -5,6 +5,7 @@ namespace SRAC\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use SRAC\Http\Requests;
 use SRAC\Http\Controllers\Controller;
 use SRAC\Noticia;
@@ -45,6 +46,7 @@ class NoticiaController extends Controller
         $noticia->descripcion = $request->descripcion;
 
         $noticia->save();
+        Session::flash('message-success', 'Noticia creada con exito');
         return Redirect::route('empleado.admin.noticias');
     }
 
@@ -91,6 +93,8 @@ class NoticiaController extends Controller
 
         $noticia->save();
         $noticias = Noticia::all();
+        Session::flash('message-success', 'Noticia editada correctamente');
+
         return Redirect::route('empleado.admin.noticias')->with('noticias', $noticias);
     }
 
@@ -104,6 +108,7 @@ class NoticiaController extends Controller
     {
         Noticia::destroy($id);
         $noticias = Noticia::all();
+        Session::flash('message-success', 'Noticia elimidada correctamente');
         return Redirect::route('empleado.admin.noticias')->with('noticias', $noticias);
     }
 }

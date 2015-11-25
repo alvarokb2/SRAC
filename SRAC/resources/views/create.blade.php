@@ -7,7 +7,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            @include('alerts.register.errors')
+            @include('alerts.errors')
             <div class="col-md-8">
 
 

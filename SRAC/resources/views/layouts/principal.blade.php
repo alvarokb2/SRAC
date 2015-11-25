@@ -50,7 +50,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            @include('alerts.register.success')
+            @include('alerts.success')
             @yield('contenido')
         </div>
     </div>

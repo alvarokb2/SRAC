@@ -9,7 +9,7 @@
 
 @section('contenido')
     @include('alerts.auth.errors')
-    @include('alerts.register.errors')
+    @include('alerts.errors')
 
     <div class="container-fluid">
         <div class="row">
