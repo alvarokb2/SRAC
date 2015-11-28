@@ -4,6 +4,7 @@ namespace SRAC\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use SRAC\Http\Requests\CreateReservaRequest;
 use Session;
 use Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -20,14 +21,14 @@ class ReservaController extends Controller
      */
     public function index()
     {
-        Auth::user()->castigar();
         if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio'){
-
             $reservas = Reserva::where('user_id', Auth::user()->id)->orderBy('fecha', 'desc')->orderBy('estado', 'desc' )->get();
-
             return view('cliente.historial.historial')->with('reservas', $reservas);
         }
 
+        if(Auth::user()->role == 'administrador' or Auth::user()->role == 'encargado'){
+            return view('encargado.disponibilidad.reservas.reservas')->with('reservas', $reservas);
+        }
     }
 
     /**
@@ -38,16 +39,12 @@ class ReservaController extends Controller
     public function create()
     {
         if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio') {
-
-            $reserva = new Reserva;
-            return view('cliente.disponibilidad.disponibilidad')->with('reserva', $reserva);
+            return view('cliente.disponibilidad.disponibilidad');
         }
         elseif(Auth::user()->role == 'administrador' or Auth::user()->role == 'encargado'){
             return view('encargado.disponibilidad.disponibilidad');
         }
-        else{
-            return "hola";
-        }
+
     }
 
     /**
@@ -56,27 +53,8 @@ class ReservaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateReservaRequest $request)
     {
-        if(Auth::user()->disponibilidad($request->fecha, $request->hora) == 2) {
-
-            $reserva = new Reserva();
-            $reserva->fecha = $request->fecha;
-            $reserva->hora = $request->hora;
-            if (Auth::user()->role == 'cliente' or Auth::user()->role == 'socio') {
-                $reserva->estado = 'pendiente';
-            } else {
-                $reserva->estado = 'completada';
-            }
-            $reserva->user_id = $request->user_id;
-            $reserva->save();
-
-            return Redirect::route('cliente.reservas');
-        }
-        else{
-            Session::flash('mensaje', 'Tienes reservas pendientes');
-            return Redirect::route('cliente.reservas.create');
-        }
 
     }
 
@@ -86,11 +64,10 @@ class ReservaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($today)
+    public function show($id)
     {
-        $reservas = Reserva::all()->where('fecha', $today);
-
-        return view('encargado.disponibilidad.reservas.reservas')->with('reservas', $reservas);
+        $reserva = Reserva::findOrFail($id);
+        return view('encargado.disponibilidad.reservas.reserva')->with('reserva', $reserva);
     }
 
     /**
@@ -101,8 +78,7 @@ class ReservaController extends Controller
      */
     public function edit($id)
     {
-        $reserva = Reserva::findOrFail($id);
-        return view('encargado.disponibilidad.reservas.reserva')->with('reserva', $reserva);
+
     }
 
     /**

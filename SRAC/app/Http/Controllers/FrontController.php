@@ -22,4 +22,8 @@ class FrontController extends Controller
         return view('cliente.historial.historial');
     }
 
+    public function test(){
+        return view('test');
+    }
+
 }

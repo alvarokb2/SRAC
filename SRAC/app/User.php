@@ -38,57 +38,112 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $hidden = ['password', 'remember_token'];
 
+    /**
+     * @param
+     * @response : Reservas[]
+     * devuelve las reservas del usuario
+     */
     public function reservas(){
         return $this->hasMany('SRAC\Reserva');
     }
 
-    public function delete(){
+    /**
+     * @param $name : string, $email : string, $password : string
+     * @response : User
+     * devuelve un usuario con los parametros indicados
+     */
+
+    public static function createUser($name, $email, $password){
+        $user = new User();
+        $user->name = $name;
+        $user->email = $email;
+        $user->password = $password;
+
+        return $user;
+    }
+
+    /**
+     * @param
+     * @response : void
+     */
+    public function deleteUser(){
         foreach($this->reservas as $reserva){
             $reserva->delete();
         }
         return parent::delete();
     }
 
-    public function getDias(){
+    /**
+     * @param
+     * @response : bool
+     * true si el usuario puede reservar
+     */
+    public function available(){
+        if($this->isSanctioned(5) or $this->hasPending()){
+            return false;
+        }
+        else{
+            return true;
+        }
+
+    }
+
+    /**
+     * @param
+     * @response : int
+     * numero de dias visibles para el usuario
+     */
+    public function visibleDays(){
         switch($this->role){
             case 'cliente':
                 return 3;
-                break;
+            break;
             case 'socio':
                 return 6;
-                break;
+            break;
             default:
-                return 15;
-                break;
-
-        }
-
-    }
-
-    public function disponibilidad($fecha, $hora){
-        $pendiente = $this->reservas()->where('estado' , 'pendiente')->count();
-
-        if($pendiente > 0){
-            $response = $this->reservas()->where('fecha', '=', $fecha)->where('hora','=', $hora)->where('estado', '=', 'pendiente')->count();
-            if($response > 0){
-                return 0;
-            }
-            else{
-                return 1;
-            }
-        }
-        else{
-            return 2;
+                return 10;
+            break;
         }
     }
 
-    public function castigar(){
-        $actual = date('Y-n-j', time());
+    /**
+     * @param $days : int
+     * @response : bool
+     * true si el usuario esta tiene reservas perdidas en $days dias anteriores
+     */
+    public function isSanctioned($days){
+        $reservas = $this->reservas()->where('fecha_inicio' , '>' , date('d m Y H:i:s', time()-(86400 * $days)))
+            ->where('fecha_fin' , '<=' , date('d m Y H:i:s', time()))
+            ->where('estado' , '=', 'perdida')
+            ->count()
+            ->get();
+        return $reservas > 0;
+    }
 
-        $response = $this->reservas()->where('estado', 'pendiente')->where('fecha', '<', $actual)->get();
-        foreach($response as $reserva){
-            $reserva->estado = 'perdida';
-            $reserva->update();
+    /**
+     * @param $fecha : date
+     * @response : void
+     * modifica las reservas con estado pendiente anteriores a $fecha
+     */
+    public function setLosses($fecha){
+        $reservas = $this->reservas()->where('fecha_inicio' , '<' , $fecha);
+        foreach($reservas as $reserva){
+            if($reserva->estado == 'pendiente'){
+                $reserva->estado = 'perdida';
+                $reserva->save();
+            }
         }
+    }
+
+    /**
+     * @param
+     * @response : bool
+     * true si el usuario tiene reservas pendientes
+     */
+    public function hasPending(){
+        $reservas = $this->reservas()->where('estado' , '=', 'pendiente')
+            ->count();
+        return $reservas > 0;
     }
 }

@@ -22,6 +22,11 @@ Route::get('contact', [
     'as'    => 'contact'
 ]);
 
+Route::get('test', [
+    'uses'  => 'FrontController@test',
+    'as'    => 'test'
+]);
+
 
 //rutas autenticacion
 Route::resource('login', 'LoginController');
@@ -126,5 +131,6 @@ Route::group(['prefix' => 'empleado'], function(){
         ]);
 
     });
+
 
 });
