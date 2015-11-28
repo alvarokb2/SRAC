@@ -21,12 +21,14 @@ class ReservaController extends Controller
      */
     public function index()
     {
+
         if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio'){
-            $reservas = Reserva::where('user_id', Auth::user()->id)->orderBy('fecha', 'desc')->orderBy('estado', 'desc' )->get();
+            $reservas = Auth::user()->reservas()->where('user_id', Auth::user()->id)->orderBy('fecha_inicio', 'desc')->orderBy('estado', 'desc' )->get();
             return view('cliente.historial.historial')->with('reservas', $reservas);
         }
 
         if(Auth::user()->role == 'administrador' or Auth::user()->role == 'encargado'){
+            $reservas = Reserva::where('estado', '=', 'pendiente')->orderBy('fecha_inicio', 'desc')->get();
             return view('encargado.disponibilidad.reservas.reservas')->with('reservas', $reservas);
         }
     }
@@ -55,7 +57,27 @@ class ReservaController extends Controller
      */
     public function store(CreateReservaRequest $request)
     {
+        if(Auth::user()->available()) {
+            $reserva = Reserva::createReserva(
+                $request->fecha_inicio,
+                $request->fecha_fin,
+                $request->dias,
+                $request->numero_canchas,
+                $request->user_id);
 
+            if(Reserva::available($reserva)){
+                $reserva->save();
+                Session::flash('message-success', 'Reserva creada con exito');
+            }
+            else{
+                Session::flash('message-error', 'No es posible reservar este horario');
+            }
+        }
+        else{
+            Session::flash('message-error', 'Tiene reservas pendientes o su cuenta no esta habilitada para reservar');
+        }
+
+        return Redirect::route('cliente.reservas');
     }
 
     /**
@@ -78,7 +100,8 @@ class ReservaController extends Controller
      */
     public function edit($id)
     {
-
+        $reserva = Reserva::findOrFail($id);
+        return view('encargado.disponibilidad.reservas.reservar');
     }
 
     /**
@@ -90,9 +113,8 @@ class ReservaController extends Controller
      */
     public function update(Request $request)
     {
-        $reserva = Reserva::find($request->id);
-        $reserva->estado = 'completada';
-        $reserva->save();
+        $reserva = Reserva::where('id', '=', $request->id)->get();
+        $reserva->complete();
 
         return Redirect::route('empleado.reservas.show', date('Y-n-j', time()));
     }

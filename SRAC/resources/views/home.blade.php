@@ -8,7 +8,7 @@
 @endsection
 
 @section('contenido')
-    @include('alerts.auth.errors')
+    @include('alerts.fail')
     @include('alerts.errors')
 
     <div class="container-fluid">

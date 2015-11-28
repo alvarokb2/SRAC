@@ -24,7 +24,7 @@ class Reserva extends Model
         $response->fecha_fin = $fecha_fin;
         $response->dias = $dias;
         $response->numero_canchas = $numero_canchas;
-        $response->user->id = $user_id;
+        $response->user_id = $user_id;
 
         return $response;
     }
@@ -103,7 +103,7 @@ class Reserva extends Model
      */
     public function complete(){
         $this->estado = 'completada';
-        $this->save();
+        $this->update();
     }
 
     /**
@@ -113,6 +113,6 @@ class Reserva extends Model
      */
     public function cancel(){
         $this->estado = 'cancelada';
-        $this->save();
+        $this->update();
     }
 }

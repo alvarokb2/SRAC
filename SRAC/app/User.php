@@ -65,11 +65,10 @@ class User extends Model implements AuthenticatableContract,
     /**
      * @param
      * @response : void
+     * elimina el usuario
      */
     public function deleteUser(){
-        foreach($this->reservas as $reserva){
-            $reserva->delete();
-        }
+        $this->reservas()->delete();
         return parent::delete();
     }
 
@@ -79,13 +78,7 @@ class User extends Model implements AuthenticatableContract,
      * true si el usuario puede reservar
      */
     public function available(){
-        if($this->isSanctioned(5) or $this->hasPending()){
-            return false;
-        }
-        else{
-            return true;
-        }
-
+        return !($this->isSanctioned(5) or $this->hasPending());
     }
 
     /**
@@ -113,11 +106,10 @@ class User extends Model implements AuthenticatableContract,
      * true si el usuario esta tiene reservas perdidas en $days dias anteriores
      */
     public function isSanctioned($days){
-        $reservas = $this->reservas()->where('fecha_inicio' , '>' , date('d m Y H:i:s', time()-(86400 * $days)))
-            ->where('fecha_fin' , '<=' , date('d m Y H:i:s', time()))
-            ->where('estado' , '=', 'perdida')
-            ->count()
-            ->get();
+        $this->setLosses();
+        $reservas = $this->reservas()->where('fecha_fin', '<=', date('d m Y H:i:s'))
+            ->where('fecha_inicio', '>' , date('d m Y H:i:s', time()- (86400*$days)))
+            ->where('estado', '=' , 'perdida')->count();
         return $reservas > 0;
     }
 
@@ -126,7 +118,10 @@ class User extends Model implements AuthenticatableContract,
      * @response : void
      * modifica las reservas con estado pendiente anteriores a $fecha
      */
-    public function setLosses($fecha){
+    public function setLosses($fecha = null ){
+        if($fecha == null) {
+            $fecha = date('d m Y H:i:s');
+        }
         $reservas = $this->reservas()->where('fecha_inicio' , '<' , $fecha);
         foreach($reservas as $reserva){
             if($reserva->estado == 'pendiente'){

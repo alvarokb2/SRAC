@@ -14,8 +14,8 @@ class AddReservasTable extends Migration
     {
         Schema::create('reservas', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('fecha_inicio');
-            $table->date('fecha_fin');
+            $table->datetime('fecha_inicio');
+            $table->datetime('fecha_fin');
             $table->integer('numero_canchas')->default('1');
             $table->integer('dias')->default('127');
             $table->enum('estado', ['pendiente','completada', 'perdida', 'cancelada'])->default('pendiente');
