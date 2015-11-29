@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use SRAC\Http\Requests\CreateReservaRequest;
 use Session;
 use Auth;
+use DateTime;
 use Illuminate\Support\Facades\Redirect;
 use SRAC\Http\Requests;
 use SRAC\Http\Controllers\Controller;
@@ -23,7 +24,7 @@ class ReservaController extends Controller
     {
 
         if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio'){
-            $reservas = Auth::user()->reservas()->where('user_id', Auth::user()->id)->orderBy('fecha_inicio', 'desc')->orderBy('estado', 'desc' )->get();
+            $reservas = Auth::user()->reservas()->orderBy('fecha_inicio', 'desc')->orderBy('estado', 'desc' )->get();
             return view('cliente.historial.historial')->with('reservas', $reservas);
         }
 
@@ -58,12 +59,14 @@ class ReservaController extends Controller
     public function store(CreateReservaRequest $request)
     {
         if(Auth::user()->available()) {
+            $fecha_inicio = (new DateTime())->setTimestamp($request->fecha_inicio);
+            $fecha_fin = (new DateTime())->setTimestamp($request->fecha_fin);
+
             $reserva = Reserva::createReserva(
-                $request->fecha_inicio,
-                $request->fecha_fin,
-                $request->dias,
+                $fecha_inicio,
+                $fecha_fin,
                 $request->numero_canchas,
-                $request->user_id);
+                Auth::user()->id);
 
             if(Reserva::available($reserva)){
                 $reserva->save();

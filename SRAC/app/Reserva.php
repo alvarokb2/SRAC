@@ -18,7 +18,11 @@ class Reserva extends Model
      * @response : Reserva
      * devuelve una reserva con los parametros indicados
      */
-    public static function createReserva($fecha_inicio, $fecha_fin, $numero_canchas, $user_id){
+    public static function createReserva($fecha_inicio, $fecha_fin, $numero_canchas = null, $user_id){
+        if($numero_canchas == null){
+            $numero_canchas = 1;
+        }
+
         $response = new Reserva;
         $response->fecha_inicio = $fecha_inicio;
         $response->fecha_fin = $fecha_fin;
@@ -48,7 +52,7 @@ class Reserva extends Model
      * true si la reserva esta disponible
      */
     public static function available($reserva){
-
+        return Reserva::countMax($reserva) < 2;
     }
 
     /**
@@ -60,9 +64,7 @@ class Reserva extends Model
         $rango = Reserva::getRange($reserva);
         $response = 0;
         foreach($rango as $aux){
-            if($response < $aux->numero_canchas){
-                $response = $aux->numero_canchas;
-            }
+                $response = $response + $aux->numero_canchas;
         }
         return $response;
     }

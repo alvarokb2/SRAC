@@ -100,6 +100,19 @@ class User extends Model implements AuthenticatableContract,
         }
     }
 
+    public function getStatus(){
+        if($this->isSanctioned(5)){
+            return 2;
+        }
+        elseif($this->hasPending()){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+
+    }
+
     /**
      * @param $days : int
      * @response : bool
