@@ -21,7 +21,7 @@
                 <td>{{$user->name}}</td>
                 <td>{{$user->email}}</td>
                 <td>{{$user->role}}</td>
-                <td>{{$user->getStatus()}}</td>
+                <td></td>
                 <td>
                     @if(Auth::user()->role == 'administrador')
                         <a href="{{route('empleado.usuarios.edit', $user->id)}}" class="btn btn-warning">Editar</a>
