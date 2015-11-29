@@ -10,6 +10,20 @@ use SRAC\Reserva;
 class FrontController extends Controller
 {
     public function index(){
+        if(Auth::user()){
+            switch(Auth::user()->role){
+                case 'cliente':
+                case 'socio':
+                    return redirect('cliente/reserva');
+                    break;
+                case 'encargado':
+                case 'administrador':
+                    return redirect('empleado/usuarios');
+                    break;
+                default:
+                    return view('home');
+            }
+        }
         return view('home');
     }
 
@@ -42,9 +56,7 @@ class FrontController extends Controller
         $reserva = Reserva::createReserva($fecha_inicio,$fecha_fin, $dias, $numero_canchas, Auth::user()->id);
         $reserva->save();
         */
-
-        $reservas = Auth::user()->reservas()->get();
-        return view('test')->with('reservas', $reservas);
+        return view('test');
     }
 
 }

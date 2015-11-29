@@ -23,9 +23,13 @@
                 <td>{{$user->role}}</td>
                 <td>estado</td>
                 <td>
-                    <a href="{{route('empleado.usuarios.edit', $user->id)}}" class="btn btn-warning">Editar</a>
-                    @if(Auth::user()->role == 'administrador')
-                        <a href="{{route('empleado.usuarios.destroy', $user->id)}}" class="btn btn-danger">Borrar</a>
+                    @if($user->role == 'administrador' and Auth::user()->role == 'encargado')
+                        <a href="#" class="btn btn-danger">No Disponible</a>
+                    @else
+                        <a href="{{route('empleado.usuarios.edit', $user->id)}}" class="btn btn-warning">Editar</a>
+                        @if(Auth::user() != $user)
+                            <a href="{{route('empleado.usuarios.destroy', $user->id)}}" class="btn btn-danger">Borrar</a>
+                        @endif
                     @endif
                 </td>
             </tr>
