@@ -3,7 +3,6 @@
     @parent > Disponibilidad
 @endsection
 @section('user_contenido')
-    @include('cliente.partials.pendiente')
     <?php
     $año = date('Y'); $mes = date('m'); $dia = date('d');
     ?>
@@ -33,9 +32,9 @@
                     $tiempo->setDate($año, $mes, $dia + $i);
                     $tiempo->setTime($j, 0);
                     ?>
-                    {!! Form::hidden('fecha_inicio', $tiempo->format('d-m-Y H:i:s'), ['class' => 'form-control']  ) !!}
+                    {!! Form::hidden('fecha_inicio', $tiempo->getTimestamp(), ['class' => 'form-control']  ) !!}
                     <?php $tiempo->setTime($j + 1, 0) ?>
-                    {!! Form::hidden('fecha_fin', $tiempo->format('d-m-Y H:i:s'), ['class' => 'form-control']) !!}
+                    {!! Form::hidden('fecha_fin', $tiempo->getTimestamp(), ['class' => 'form-control']) !!}
                     <a class="btn btn-primary">Reservar</a>
                     {!! Form::close() !!}
                 </td>
