@@ -17,7 +17,6 @@ class AddReservasTable extends Migration
             $table->datetime('fecha_inicio');
             $table->datetime('fecha_fin');
             $table->integer('numero_canchas')->default('1');
-            $table->integer('dias')->default('127');
             $table->enum('estado', ['pendiente','completada', 'perdida', 'cancelada'])->default('pendiente');
             $table->integer('user_id')->unsigned();
 

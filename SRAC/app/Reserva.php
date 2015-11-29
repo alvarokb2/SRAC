@@ -18,11 +18,10 @@ class Reserva extends Model
      * @response : Reserva
      * devuelve una reserva con los parametros indicados
      */
-    public static function createReserva($fecha_inicio, $fecha_fin,$dias, $numero_canchas, $user_id){
+    public static function createReserva($fecha_inicio, $fecha_fin, $numero_canchas, $user_id){
         $response = new Reserva;
         $response->fecha_inicio = $fecha_inicio;
         $response->fecha_fin = $fecha_fin;
-        $response->dias = $dias;
         $response->numero_canchas = $numero_canchas;
         $response->user_id = $user_id;
 

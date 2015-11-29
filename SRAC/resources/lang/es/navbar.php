@@ -11,4 +11,5 @@ return [
 
     'contact' => 'Contacto',
     'home' => 'Inicio',
+    'logout' => 'Salir',
 ];
