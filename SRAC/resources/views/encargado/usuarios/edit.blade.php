@@ -35,7 +35,7 @@
                 !!}
             @else
                 {!! Form::select('role',
-                    ['cliente' => 'cliente', 'socio' => 'socio', 'encargado' => 'encargado'],
+                    ['cliente' => 'cliente', 'socio' => 'socio'],
                     $user->role,
                     ['class' => 'form-control'])
                 !!}

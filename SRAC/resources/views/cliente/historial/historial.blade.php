@@ -6,16 +6,20 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Fecha</th>
-            <th>Hora</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
             <th>Estado</th>
         </tr>
         </thead>
         <tbody>
         @foreach(Auth::user()->reservas() as $reserva)
+            <?php
+                $fecha_inicio = (new DateTime())->setTimestamp($reserva->fecha_inicio);
+                $fecha_fin = (new DateTime())->setTimestamp($reserva->fecha_fin);
+            ?>
             <tr>
-                <td>{{$reserva->fecha_inicio}}</td>
-                <td>{{$reserva->fecha_inicio}}</td>
+                <td>{{$fecha_inicio->format('d-m-Y H:i:s')}}</td>
+                <td>{{$fecha_fin->format('d-m-Y H:i:s')}}</td>
                 <td><p class="btn btn-warning">{{$reserva->estado}}</p></td>
             </tr>
         @endforeach

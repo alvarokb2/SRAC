@@ -21,14 +21,19 @@
                 <td>{{$user->name}}</td>
                 <td>{{$user->email}}</td>
                 <td>{{$user->role}}</td>
-                <td>estado</td>
+                <td></td>
                 <td>
-                    @if($user->role == 'administrador' and Auth::user()->role == 'encargado')
-                        <a href="#" class="btn btn-danger">No Disponible</a>
-                    @else
+                    @if(Auth::user()->role == 'administrador')
                         <a href="{{route('empleado.usuarios.edit', $user->id)}}" class="btn btn-warning">Editar</a>
                         @if(Auth::user() != $user)
                             <a href="{{route('empleado.usuarios.destroy', $user->id)}}" class="btn btn-danger">Borrar</a>
+                        @endif
+                    @else
+                        @if($user->role == 'cliente' or $user->role == 'socio')
+                            <a href="{{route('empleado.usuarios.edit', $user->id)}}" class="btn btn-warning">Editar</a>
+                            <a href="{{route('empleado.usuarios.destroy', $user->id)}}" class="btn btn-danger">Borrar</a>
+                        @else
+                            <a href="#" class="btn btn-primary">No Disponible</a>
                         @endif
                     @endif
                 </td>
