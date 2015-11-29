@@ -28,6 +28,7 @@
         </div>
         <div class="col-md-12">
             @include('alerts.errors')
+            @include('alerts.fail')
             @include('alerts.success')
             @yield('contenido')
         </div>
