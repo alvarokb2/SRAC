@@ -2,6 +2,7 @@
 
 namespace SRAC\Http\Controllers;
 
+use SRAC\User;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use SRAC\Http\Controllers\Controller;
@@ -56,6 +57,17 @@ class FrontController extends Controller
         $reserva = Reserva::createReserva($fecha_inicio,$fecha_fin, $dias, $numero_canchas, Auth::user()->id);
         $reserva->save();
         */
+
+        $fecha_inicio = (new DateTime())->setDate(2015,11,29);
+        $fecha_inicio->setTime(9,0);
+        $fecha_fin = (new DateTime())->setDate(2015,12,15);
+        $fecha_fin->setTime(11,0);
+        $dias = [1,3,5];
+        $numero_canchas = 1;
+        $user_id = 1;
+
+        Reserva::createMany($fecha_inicio,$fecha_fin,$dias,$numero_canchas,$user_id);
+
         return view('test');
     }
 

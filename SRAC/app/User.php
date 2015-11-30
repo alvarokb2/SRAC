@@ -78,6 +78,7 @@ class User extends Model implements AuthenticatableContract,
      * true si el usuario puede reservar
      */
     public function available(){
+        $actual = new \DateTime();
         return !($this->isSanctioned(5) or $this->hasPending());
     }
 
@@ -120,8 +121,8 @@ class User extends Model implements AuthenticatableContract,
      */
     public function isSanctioned($days){
         $this->setLosses();
-        $reservas = $this->reservas()->where('fecha_fin', '<=', date('d m Y H:i:s'))
-            ->where('fecha_inicio', '>' , date('d m Y H:i:s', time()- (86400*$days)))
+        $reservas = $this->reservas()->where('fecha_fin', '<=', date('Y-m-d H:i:s'))
+            ->where('fecha_inicio', '>' , date('Y-m-d H:i:s', time()- (86400*$days)))
             ->where('estado', '=' , 'perdida')->count();
         return $reservas > 0;
     }
@@ -133,9 +134,9 @@ class User extends Model implements AuthenticatableContract,
      */
     public function setLosses($fecha = null ){
         if($fecha == null) {
-            $fecha = date('d m Y H:i:s');
+            $fecha = new \DateTime();
         }
-        $reservas = $this->reservas()->where('fecha_inicio' , '<' , $fecha);
+        $reservas = $this->reservas()->where('fecha_fin' , '<' , $fecha)->get();
         foreach($reservas as $reserva){
             if($reserva->estado == 'pendiente'){
                 $reserva->estado = 'perdida';

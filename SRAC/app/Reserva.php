@@ -18,20 +18,50 @@ class Reserva extends Model
      * @response : Reserva
      * devuelve una reserva con los parametros indicados
      */
-    public static function createReserva($fecha_inicio, $fecha_fin, $numero_canchas = null, $user_id){
+    public static function createReserva($fecha_inicio, $fecha_fin, $numero_canchas = null, $user_id, $estado = null){
         if($numero_canchas == null){
             $numero_canchas = 1;
+        }
+        if($estado == null){
+            $estado = 'pendiente';
         }
 
         $response = new Reserva;
         $response->fecha_inicio = $fecha_inicio;
         $response->fecha_fin = $fecha_fin;
+        $response->estado = $estado;
         $response->numero_canchas = $numero_canchas;
         $response->user_id = $user_id;
 
         return $response;
     }
 
+    public static function createMany($fecha_inicio, $fecha_fin, $dias,$numero_canchas, $user_id){
+        $fecha_i = (new \DateTime())->setTimestamp($fecha_inicio->getTimestamp());
+
+        $fecha_f = $fecha_i;
+        $fecha_f->setTime(date('H',$fecha_fin->getTimestamp()),date('i',$fecha_fin->getTimestamp()));
+
+        $dia = date('d', $fecha_i->getTimestamp());
+        $mes = date('m', $fecha_i->getTimestamp());
+        $anio = date('Y', $fecha_i->getTimestamp());
+
+        $aux = 1;
+
+        while($fecha_f < $fecha_fin){
+
+            if(in_array(date('N', $fecha_i->getTimestamp()), $dias)){
+                $reserva = Reserva::createReserva($fecha_i,$fecha_f,$numero_canchas, $user_id, 'completada');
+                if(Reserva::available($reserva)){
+                    $reserva->save();
+                }
+            }
+            $fecha_i->setDate($anio,$mes,$dia+$aux);
+            $fecha_f->setDate($anio,$mes,$dia+$aux);
+            $aux++;
+        }
+
+    }
 
     /**
      * @param : $reserva
@@ -52,7 +82,8 @@ class Reserva extends Model
      * true si la reserva esta disponible
      */
     public static function available($reserva){
-        return Reserva::countMax($reserva) < 2;
+        $actual = new \DateTime();
+        return Reserva::countMax($reserva) + $reserva->numero_canchas <= 3 && $reserva->fecha_inicio > $actual ;
     }
 
     /**

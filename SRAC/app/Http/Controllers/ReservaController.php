@@ -24,6 +24,7 @@ class ReservaController extends Controller
     {
 
         if(Auth::user()->role == 'cliente' or Auth::user()->role == 'socio'){
+            Auth::user()->available();
             $reservas = Auth::user()->reservas()->orderBy('fecha_inicio', 'desc')->orderBy('estado', 'desc' )->get();
             return view('cliente.historial.historial')->with('reservas', $reservas);
         }
