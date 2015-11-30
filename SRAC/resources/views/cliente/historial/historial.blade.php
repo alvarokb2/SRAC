@@ -12,14 +12,10 @@
         </tr>
         </thead>
         <tbody>
-        @foreach(Auth::user()->reservas() as $reserva)
-            <?php
-                $fecha_inicio = (new DateTime())->setTimestamp($reserva->fecha_inicio);
-                $fecha_fin = (new DateTime())->setTimestamp($reserva->fecha_fin);
-            ?>
+        @foreach(Auth::user()->reservas()->orderBy('fecha_inicio', 'desc')->get() as $reserva)
             <tr>
-                <td>{{$fecha_inicio->format('d-m-Y H:i:s')}}</td>
-                <td>{{$fecha_fin->format('d-m-Y H:i:s')}}</td>
+                <td>{{$reserva->fecha_inicio}}</td>
+                <td>{{$reserva->fecha_fin}}</td>
                 <td><p class="btn btn-warning">{{$reserva->estado}}</p></td>
             </tr>
         @endforeach
