@@ -3,6 +3,9 @@
     @parent > Usuarios
 @endsection
 @section('user_contenido')
+    <div class="col-lg-12">
+        {!! Form::text('buscar', '', ['id' => 'user_filter' ,'class' => 'col-lg-4 form-control']) !!}
+    </div>
     <table class="table">
         <thead>
         <tr>
@@ -14,11 +17,11 @@
             <th>Opciones</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="user_table">
         @foreach($users as $user)
             <tr>
                 <td>{{$user->id}}</td>
-                <td>{{$user->name}}</td>
+                <td class="user_name">{{$user->name}}</td>
                 <td>{{$user->email}}</td>
                 <td>{{$user->role}}</td>
                 <td></td>

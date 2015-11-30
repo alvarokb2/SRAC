@@ -3,12 +3,17 @@
     @parent > Reservas
 @endsection
 @section('user_contenido')
+    <?php
+        use SRAC\User;
+        ?>
     <table class="table">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Horario</th>
             <th>Usuario</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Canchas</th>
             <th>Estado</th>
             <th>Opciones</th>
         </tr>
@@ -17,8 +22,10 @@
         @foreach($reservas as $reserva)
             <tr>
                 <td>{{$reserva->id}}</td>
+                <td>{{User::where('id', $reserva->user_id)->get()[0]->name}}</td>
                 <td>{{$reserva->fecha_inicio}}</td>
-                <td></td>
+                <td>{{$reserva->fecha_fin}}</td>
+                <td>{{$reserva->numero_canchas}}</td>
                 <td>{{$reserva->estado}}</td>
                 <td><a href="#" class="btn btn-primary">Ver</a></td>
                 <!--
