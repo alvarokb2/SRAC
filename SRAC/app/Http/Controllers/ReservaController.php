@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Redirect;
 use SRAC\Http\Requests;
 use SRAC\Http\Controllers\Controller;
 use SRAC\Reserva;
+use SRAC\User;
 
 class ReservaController extends Controller
 {
@@ -95,6 +96,13 @@ class ReservaController extends Controller
         $reserva = Reserva::findOrFail($id);
         return view('encargado.disponibilidad.reservas.reserva')->with('reserva', $reserva);
     }
+
+
+    public function showReservasUsuario($user_id){
+        $reservas = User::findOrFail($user_id)->reservas()->where('estado', '=', 'pendiente')->get();
+        return view('encargado.usuarios.reservas')->with('reservas', $reservas);
+    }
+
 
     /**
      * Show the form for editing the specified resource.
