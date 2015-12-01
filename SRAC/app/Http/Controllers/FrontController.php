@@ -43,6 +43,7 @@ class FrontController extends Controller
     public function test(){
 
         /*
+         * prueba metodos
         $fecha_inicio = new \DateTime();
         $fecha_inicio->setDate(2015,11,23);
         $fecha_inicio->setTime(9,0);
@@ -58,6 +59,9 @@ class FrontController extends Controller
         $reserva->save();
         */
 
+
+        /*
+         * prueba createMany
         $fecha_inicio = (new DateTime())->setDate(2015,11,29);
         $fecha_inicio->setTime(9,0);
         $fecha_fin = (new DateTime())->setDate(2015,12,15);
@@ -67,7 +71,7 @@ class FrontController extends Controller
         $user_id = 1;
 
         Reserva::createMany($fecha_inicio,$fecha_fin,$dias,$numero_canchas,$user_id);
-
+        */
         return view('test');
     }
 

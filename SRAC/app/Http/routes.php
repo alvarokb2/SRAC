@@ -106,10 +106,13 @@ Route::group(['prefix' => 'empleado'], function(){
             'store'     => 'empleado.reservas.store',
             'show'      => 'empleado.reservas.show',
             'edit'      => 'empleado.reservas.edit',
-            'update'    => 'empleado.reservas.update'
+            'update'    => 'empleado.reservas.update',
             ]
         ]);
-
+    Route::get('showreservasusuario/{user_id}', [
+        'uses'  => 'ReservaController@showReservasUsuario',
+        'as'    => 'empleado.reservas.showreservasusuario',
+    ]);
 
     Route::group(['prefix' => 'admin'], function(){
 

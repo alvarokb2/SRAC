@@ -103,13 +103,13 @@ class User extends Model implements AuthenticatableContract,
 
     public function getStatus(){
         if($this->isSanctioned(5)){
-            return 2;
+            return 'suspendido';
         }
         elseif($this->hasPending()){
-            return 1;
+            return 'pendiente';
         }
         else{
-            return 0;
+            return 'disponible';
         }
 
     }

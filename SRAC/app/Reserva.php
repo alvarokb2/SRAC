@@ -39,15 +39,16 @@ class Reserva extends Model
     public static function createMany($fecha_inicio, $fecha_fin, $dias,$numero_canchas, $user_id){
         $fecha_i = (new \DateTime())->setTimestamp($fecha_inicio->getTimestamp());
 
-        $fecha_f = $fecha_i;
-        $fecha_f->setTime(date('H',$fecha_fin->getTimestamp()),date('i',$fecha_fin->getTimestamp()));
+        $fecha_f = (new \DateTime())->setTimestamp($fecha_inicio->getTimestamp());
 
+        $hora_f = date('H', $fecha_fin->getTimestamp());
         $dia = date('d', $fecha_i->getTimestamp());
         $mes = date('m', $fecha_i->getTimestamp());
         $anio = date('Y', $fecha_i->getTimestamp());
 
         $aux = 1;
 
+        $fecha_f->setTime($hora_f,0);
         while($fecha_f < $fecha_fin){
 
             if(in_array(date('N', $fecha_i->getTimestamp()), $dias)){
