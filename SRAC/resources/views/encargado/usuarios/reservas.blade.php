@@ -8,7 +8,6 @@
 @endsection
 @section('user_contenido')
     <?php
-    use SRAC\Reserva;
     use SRAC\User;
     ?>
     <h4 class="btn btn-default" id="user_reservas_filter_btn">Filtros <span class="caret"></span></h4>
@@ -25,7 +24,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach(Reserva::all() as $reserva)
+        @foreach($reservas as $reserva)
             <tr>
                 <td>{{$reserva->id}}</td>
                 <td>{{User::where('id', $reserva->user_id)->get()[0]->name}}</td>
