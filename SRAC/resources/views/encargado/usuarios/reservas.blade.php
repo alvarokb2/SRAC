@@ -10,8 +10,8 @@
     <?php
     use SRAC\User;
     ?>
-    <h4 class="btn btn-default" id="user_reservas_filter_btn">Filtros <span class="caret"></span></h4>
-    <table class="table" id="user_reservas_filter_table">
+    <h4 class="btn btn-default" id="reservas_filter_btn">Filtros <span class="caret"></span></h4>
+    <table class="table" id="table_reservas">
         <thead>
         <tr>
             <th>ID</th>
