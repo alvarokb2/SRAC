@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
     $('#user_filter_btn').createFilterTable('#user_filter_table');
-    $('#user_reservas_filter_btn').createFilterTable('#user_reservas_filter_table');
+    $('#reservas_filter_btn').createFilterTable('#table_reservas');
 });
 
 (function () {

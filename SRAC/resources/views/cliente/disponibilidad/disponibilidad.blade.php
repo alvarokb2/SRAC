@@ -4,6 +4,7 @@
 @endsection
 @section('user_contenido')
     <?php
+    use SRAC\Reserva;
     $anio = date('Y'); $mes = date('m'); $dia = date('d');
     ?>
     <table class="table">
@@ -28,14 +29,27 @@
                 <td class="text-center">
                     {!! Form::open(['route' => 'cliente.reservas.store', 'method' => 'POST']) !!}
                     <?php
-                    $tiempo = new DateTime();
-                    $tiempo->setDate($anio, $mes, $dia + $i);
-                    $tiempo->setTime($j, 0);
+                    $fecha_inicio = new DateTime();
+                    $fecha_inicio->setDate($anio, $mes, $dia + $i);
+                    $fecha_inicio->setTime($j, 0);
+                    $fecha_fin = new DateTime();
+                    $fecha_fin->setDate($anio, $mes, $dia + $i);
+                    $fecha_fin->setTime($j + 1, 0);
+                    $reserva = Reserva::createReserva($fecha_inicio, $fecha_fin, 1, Auth::user()->id);
+                    echo 'available: ' . Reserva::available($reserva);
+                    echo '<br>';
+                    echo 'max: ' . Reserva::countMax($reserva);
+                    echo '<br>';
+                    echo 'min: ' . Reserva::countMin($reserva);
+                    echo '<br>';
                     ?>
-                    {!! Form::hidden('fecha_inicio', $tiempo->getTimestamp(), ['class' => 'form-control']  ) !!}
-                    <?php $tiempo->setTime($j + 1, 0) ?>
-                    {!! Form::hidden('fecha_fin', $tiempo->getTimestamp(), ['class' => 'form-control']) !!}
-                    {!! Form::submit('Reservar', ['class' => 'btn btn-primary']) !!}
+                    @if(Reserva::available($reserva))
+                        {!! Form::hidden('fecha_inicio', $fecha_inicio->getTimestamp(), ['class' => 'form-control']  ) !!}
+                        {!! Form::hidden('fecha_fin', $fecha_fin->getTimestamp(), ['class' => 'form-control']) !!}
+                        {!! Form::submit('Reservar', ['class' => 'btn btn-primary']) !!}
+                    @else
+                        <a class="btn btn-danger">No Disponible</a>
+                    @endif
                     {!! Form::close() !!}
                 </td>
             @endfor

@@ -5,8 +5,10 @@
 @section('user_contenido')
     <?php
         use SRAC\User;
+        use SRAC\Reserva;
         ?>
-    <table class="table">
+    <h4 class="btn btn-default" id="reservas_filter_btn">Filtros <span class="caret"></span></h4>
+    <table class="table" id="table_reservas">
         <thead>
         <tr>
             <th>ID</th>
@@ -19,7 +21,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($reservas as $reserva)
+        @foreach(Reserva::all() as $reserva)
             <tr>
                 <td>{{$reserva->id}}</td>
                 <td>{{User::where('id', $reserva->user_id)->get()[0]->name}}</td>
@@ -28,9 +30,6 @@
                 <td>{{$reserva->numero_canchas}}</td>
                 <td>{{$reserva->estado}}</td>
                 <td><a href="#" class="btn btn-primary">Ver</a></td>
-                <!--
-                <td><a href="{{route('empleado.reservas.edit',$reserva->id)}}" class="btn btn-primary">Ver</a></td>
-                -->
             </tr>
         @endforeach
         </tbody>
