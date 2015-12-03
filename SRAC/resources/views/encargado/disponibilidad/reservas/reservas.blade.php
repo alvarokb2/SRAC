@@ -7,8 +7,8 @@
         use SRAC\User;
         use SRAC\Reserva;
         ?>
-    <h4 class="btn btn-default" id="reservas_filter_btn">Filtros <span class="caret"></span></h4>
-    <table class="table" id="table_reservas">
+    <div class="btn btn-default" id="filter_btn">Filtros <span class="caret"></span></div>
+    <table class="table" id="filter_table">
         <thead>
         <tr>
             <th>ID</th>

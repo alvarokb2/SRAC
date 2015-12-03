@@ -14,13 +14,14 @@
         </div>
         <div class="form-group">
             {!! Form::label('descripcion', 'Descripcion') !!}
-            {!! Form::text('descripcion', null, [
+            {!! Form::textarea('descripcion', null, [
             'class'         => 'form-control',
             'placeholder'   => 'Descripcion',
             'required']) !!}
         </div>
         <div class="form-group">
             {!! Form::submit( 'Publicar', ['class' => 'btn btn-primary']) !!}
+            <a href="{{route('empleado.admin.noticias')}}" class="btn btn-danger">Cancelar</a>
         </div>
         {!! Form::close() !!}
     </div>

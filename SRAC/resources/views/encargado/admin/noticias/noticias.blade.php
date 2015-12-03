@@ -4,8 +4,9 @@
 @endsection
 @section('user_contenido')
     <a href="{{route('empleado.admin.noticias.create')}}" class="btn btn-primary">Nueva Noticia</a>
+    <div class="btn btn-default" id="filter_btn">Filtros <span class="caret"></span></div>
     <br>
-    <table class="table">
+    <table class="table" id="filter_table">
         <thead>
         <tr>
             <th>Titulo</th>

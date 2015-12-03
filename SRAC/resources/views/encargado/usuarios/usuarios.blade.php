@@ -4,8 +4,8 @@
 @endsection
 @section('user_contenido')
     <div>
-        <h4 class="btn btn-default" id="user_filter_btn">Filtros <span class="caret"></span></h4>
-        <table class="table" id="user_filter_table">
+        <div class="btn btn-default" id="filter_btn">Filtros <span class="caret"></span></div>
+        <table class="table" id="filter_table">
             <thead>
             <tr>
                 <th>ID</th>
@@ -38,9 +38,6 @@
                             @else
                                 <a href="#" class="btn btn-primary">No Disponible</a>
                             @endif
-                        @endif
-                        @if($user->reservas()->count() > 0)
-                            <a href="{{route('empleado.reservas.showreservasusuario', $user->id)}}" class="btn btn-success">Reservas</a>
                         @endif
                     </td>
                 </tr>

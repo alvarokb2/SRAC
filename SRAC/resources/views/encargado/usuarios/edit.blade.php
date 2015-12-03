@@ -44,6 +44,7 @@
         <input type="hidden" name="id" value="{{$user->id}}">
         <div class="form-group">
             {!! Form::submit( 'Editar', ['class' => 'btn btn-primary']) !!}
+            <a href="{{route('empleado.usuarios')}}" class="btn btn-danger">Cancelar</a>
             {!! Form::close() !!}
         </div>
     </div>
