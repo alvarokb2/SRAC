@@ -31,8 +31,7 @@ class ReservaController extends Controller
         }
 
         if(Auth::user()->role == 'administrador' or Auth::user()->role == 'encargado'){
-            $reservas = Reserva::where('estado', '=', 'pendiente')->orderBy('fecha_inicio', 'desc')->get();
-            return view('encargado.disponibilidad.reservas.reservas')->with('reservas', $reservas);
+            return view('encargado.disponibilidad.reservas.reservas');
         }
     }
 
@@ -99,8 +98,9 @@ class ReservaController extends Controller
 
 
     public function showReservasUsuario($user_id){
+        $user_name = User::findOrFail($user_id)->name;
         $reservas = User::findOrFail($user_id)->reservas()->where('estado', '=', 'pendiente')->get();
-        return view('encargado.usuarios.reservas')->with('reservas', $reservas);
+        return view('encargado.usuarios.reservas')->with('reservas', $reservas)->with('user_name', $user_name);
     }
 
 
