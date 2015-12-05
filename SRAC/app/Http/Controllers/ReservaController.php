@@ -86,7 +86,7 @@ class ReservaController extends Controller
 
     public function reservarLotes($user_id){
         $user = User::findOrFail($user_id);
-        return view('encargado.usuarios.reservarLotes')->with('user_id', $user);
+        return view('encargado.usuarios.reservarLotes')->with('user', $user);
     }
 
     /**
