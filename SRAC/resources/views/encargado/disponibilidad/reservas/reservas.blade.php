@@ -21,17 +21,24 @@
         </tr>
         </thead>
         <tbody>
-        @foreach(Reserva::all() as $reserva)
+        @foreach(Reserva::orderBy('fecha_inicio', 'desc')->orderBy('id', 'asc')->get() as $reserva)
             <tr>
                 <td>{{$reserva->id}}</td>
                 <td>{{User::where('id', $reserva->user_id)->get()[0]->name}}</td>
                 <td>{{$reserva->fecha_inicio}}</td>
                 <td>{{$reserva->fecha_fin}}</td>
-                <td><div class="badge">{{$reserva->numero_canchas}}</div></td>
+                <td>
+                    <div class="badge">{{$reserva->numero_canchas}}</div>
+                </td>
                 <td>
                     @include('partials.estado_reserva_btn', ['estado' => $reserva->estado])
                 </td>
-                <td><a href="#" class="btn btn-primary">Ver</a></td>
+                <td>
+                    @if($reserva->estado == 'pendiente')
+                        <a href="#" class="btn btn-success">Confirmar</a>
+                        <a href="#" class="btn btn-danger">Cancelar</a>
+                    @endif
+                </td>
             </tr>
         @endforeach
         </tbody>
