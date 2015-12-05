@@ -36,33 +36,56 @@ class Reserva extends Model
         return $response;
     }
 
+    public static function getStatus($reserva){
+        $user = User::findOrFail($reserva->user_id);
+
+        $aux = $user->reservas()->where('fecha_inicio', '=', $reserva->fecha_inicio)
+            ->get();
+        if($aux->count() > 0){
+            return $aux->first()->estado;
+        }
+        else{
+            if(Reserva::available($reserva)){
+                return 'disponible';
+            }
+            else{
+                return 'no disponible';
+            }
+        }
+    }
+
+
     public static function createMany($fecha_inicio, $fecha_fin, $dias,$numero_canchas, $user_id){
         $fecha_i = (new \DateTime())->setTimestamp($fecha_inicio->getTimestamp());
-
         $fecha_f = (new \DateTime())->setTimestamp($fecha_inicio->getTimestamp());
 
         $hora_f = date('H', $fecha_fin->getTimestamp());
-        $dia = date('d', $fecha_i->getTimestamp());
-        $mes = date('m', $fecha_i->getTimestamp());
-        $anio = date('Y', $fecha_i->getTimestamp());
+        $hora_i = date('H', $fecha_inicio->getTimestamp());
+        $fecha_f->setTime($hora_i + 1,0);
+        $reserva = Reserva::createReserva($fecha_i,$fecha_f,$numero_canchas,$user_id);
 
-        $aux = 1;
-
-        $fecha_f->setTime($hora_f,0);
-        while($fecha_f < $fecha_fin){
-
+        while($fecha_f <= $fecha_fin){
+            //si el dia corresponde
             if(in_array(date('N', $fecha_i->getTimestamp()), $dias)){
-                $reserva = Reserva::createReserva($fecha_i,$fecha_f,$numero_canchas, $user_id, 'completada');
-                if(Reserva::available($reserva)){
-                    $reserva->save();
+                //iterador horarios del dia
+                for($i = $hora_i ; $i < $hora_f; $i++ ){
+                    $reserva = Reserva::createReserva($fecha_i,$fecha_f,$numero_canchas, $user_id, 'completada');
+                    if(Reserva::available($reserva)){
+                        $reserva->save();
+                        $reserva->fecha_inicio->setTime($i + 1,0);
+                        $reserva->fecha_fin->setTime($i + 2,0);
+                    }
                 }
             }
-            $fecha_i->setDate($anio,$mes,$dia+$aux);
-            $fecha_f->setDate($anio,$mes,$dia+$aux);
-            $aux++;
+            //cambio de dia y vuelta al horario de inicio
+            $reserva->fecha_inicio->add(new \DateInterval('P1D'));
+            $reserva->fecha_inicio->setTime($hora_i,0);
+            $reserva->fecha_fin->add(new \DateInterval('P1D'));
+            $reserva->fecha_fin->setTime($hora_i+1,0);
         }
-
     }
+
+
 
     /**
      * @param : $reserva
