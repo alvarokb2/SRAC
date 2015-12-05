@@ -39,6 +39,7 @@
                                 <a href="#" class="btn btn-primary">No Disponible</a>
                             @endif
                         @endif
+                        <a href="{{route('empleado.reservas.reservarlotes')}}" class="btn btn-primary">Reservar Lotes</a>
                     </td>
                 </tr>
             @endforeach

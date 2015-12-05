@@ -1,18 +1,15 @@
-
-body{
-    background-color: #fff;
+.filter .form-group {
+    margin: 0px -15px 2px -15px;
 }
 
-#formulario-registro{
-    position: absolute;
-    background-color: oldlace;
-    bottom:0px;
-    right:0px;
-
+.filter .jumbotron {
+    padding: 10px 40px 10px 40px;
 }
-hr, .hrcolor {
-    height: 1px;
-    border: 0;
-    color: #666;
-    background-color: #080808;
+
+.filter .input-sm {
+    padding: 0px 10px 0px 10px;
+}
+
+table .btn {
+    padding: 2px 10px 2px 10px;
 }

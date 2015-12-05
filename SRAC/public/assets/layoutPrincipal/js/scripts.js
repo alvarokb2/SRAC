@@ -6,6 +6,10 @@ $(document).ready(function () {
 
 (function () {
     $.prototype.createFilterTable = function (tableId) {
+        var allow = $('<div/>',{class:'filter'});
+        var filterBtn = $(this).clone();
+        allow.append(filterBtn);
+        $(this).replaceWith(allow);
         var table = $(tableId);
         var header = table.find('thead');
         var body = table.find('tbody');
@@ -72,7 +76,7 @@ $(document).ready(function () {
         titles.each(function (n) {
             var label = $('<label/>', {text: $(this).text(), class: 'control-label col-sm-2'});
             var div = $('<div/>', {class: 'col-sm-10'});
-            var textbox = $('<input/>', {type: 'text', class: 'form-control'});
+            var textbox = $('<input/>', {type: 'text', class: 'form-control input-sm'});
             var fg = $('<div/>', {class: 'form-group'});
             fg.append(label).append(div.append(textbox));
             textbox.prop('index', n);
@@ -81,7 +85,7 @@ $(document).ready(function () {
         });
         content.append(fg1).append(fg2).append(fg3);
         content.hide();
-        $(this).after(content).click(function (e) {
+        filterBtn.after(content).click(function (e) {
             content.toggle();
         });
     };

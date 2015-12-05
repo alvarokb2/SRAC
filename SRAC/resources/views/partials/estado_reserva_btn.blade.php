@@ -10,7 +10,4 @@
     @else
         <div class="btn btn-default">{{$estado}}</div>
     @endif
-@else
-    variable $estado no definida
 @endif
-<!-- ['pendiente','completada', 'perdida', 'cancelada'] -->
