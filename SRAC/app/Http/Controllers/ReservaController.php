@@ -137,14 +137,14 @@ class ReservaController extends Controller
      */
     public function update(Request $request)
     {
-        $reserva = Reserva::findOrFail($request->id);
+        $reserva = Reserva::findOrFail($request->reserva_id);
         if($request->operacion){
             $reserva->complete();
-            $msg = 'la reserva '.$request->id.' ha sido completada';
+            $msg = 'la reserva '.$request->reserva_id.' ha sido completada';
         }
         else{
             $reserva->cancel();
-            $msg = 'la reserva '.$request->id.' ha sido cancelada';
+            $msg = 'la reserva '.$request->reserva_id.' ha sido cancelada';
         }
 
         Session::flash('message-success', $msg);

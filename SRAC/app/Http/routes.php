@@ -119,7 +119,7 @@ Route::group(['prefix' => 'empleado'], function(){
         'as'    => 'empleado.reservas.showreservasusuario',
     ]);
 
-    Route::get('reservarlotes', [
+    Route::get('reservarlotes/{user_id}', [
         'uses'  => 'ReservaController@reservarLotes',
         'as'    => 'empleado.reservas.reservarlotes',
     ]);
