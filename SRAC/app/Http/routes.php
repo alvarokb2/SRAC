@@ -29,7 +29,12 @@ Route::get('test', [
 
 
 //rutas autenticacion
-Route::resource('login', 'LoginController');
+Route::resource('login', 'LoginController', [
+    'names' => [
+        'create'    => 'login.create',
+        'store'     => 'login.store',
+    ]
+]);
 Route::get('logout', [
     'uses'  => 'LoginController@Logout',
     'as'    => 'logout'
@@ -112,6 +117,11 @@ Route::group(['prefix' => 'empleado'], function(){
     Route::get('showreservasusuario/{user_id}', [
         'uses'  => 'ReservaController@showReservasUsuario',
         'as'    => 'empleado.reservas.showreservasusuario',
+    ]);
+
+    Route::get('reservarlotes', [
+        'uses'  => 'ReservaController@reservarLotes',
+        'as'    => 'empleado.reservas.reservarlotes',
     ]);
 
     Route::group(['prefix' => 'admin'], function(){

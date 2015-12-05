@@ -84,6 +84,11 @@ class ReservaController extends Controller
         return Redirect::route('cliente.reservas');
     }
 
+    public function reservarLotes($user_id){
+        $user = User::findOrFail($user_id);
+        return view('encargado.usuarios.reservarLotes')->with('user_id', $user);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -97,6 +102,13 @@ class ReservaController extends Controller
     }
 
 
+    /**
+     * muestra las reservas pendientes del usuario
+     *
+     * @param  int : user_id
+     * @return
+     * devuelve la vista
+     */
     public function showReservasUsuario($user_id){
         $user_name = User::findOrFail($user_id)->name;
         $reservas = User::findOrFail($user_id)->reservas()->where('estado', '=', 'pendiente')->get();
@@ -125,11 +137,20 @@ class ReservaController extends Controller
      */
     public function update(Request $request)
     {
-        $reserva = Reserva::where('id', '=', $request->id)->get();
-        $reserva->complete();
+        $reserva = Reserva::findOrFail($request->id);
+        if($request->operacion){
+            $reserva->complete();
+            $msg = 'la reserva '.$request->id.' ha sido completada';
+        }
+        else{
+            $reserva->cancel();
+            $msg = 'la reserva '.$request->id.' ha sido cancelada';
+        }
 
-        return Redirect::route('empleado.reservas.show', date('Y-n-j', time()));
+        Session::flash('message-success', $msg);
+        return Redirect::route('empleado.reservas');
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -7,7 +7,6 @@
 
     <a href="{{route('empleado.reservas.showreservasusuario', 1)}}">ahipo</a>
 
-
     visible days : {{Auth::user()->visibleDays()}}
     <br>
     @if(date('d') == (date('d', time()-1)))
