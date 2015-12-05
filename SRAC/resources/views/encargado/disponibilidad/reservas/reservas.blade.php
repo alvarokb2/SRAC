@@ -35,7 +35,7 @@
                 </td>
                 <td>
                     <?php $arr = ['route' => 'empleado.reservas.update', 'method' => 'PUT', 'class' => 'form-inine', 'style' => 'display: inline'] ?>
-                    @if($reserva->estado == 'completada')
+                    @if($reserva->estado == 'pendiente')
                         {!! Form::open($arr) !!}
                         {!! Form::hidden('reserva_id', $reserva->id) !!}
                         {!! Form::hidden('operacion', true) !!}
