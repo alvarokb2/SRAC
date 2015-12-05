@@ -34,7 +34,7 @@
                     @include('partials.estado_reserva_btn', ['estado' => $reserva->estado])
                 </td>
                 <td>
-                    <?php $arr = ['route' => 'empleado.reservas.update', 'method' => 'PUT', 'class' => 'form-inine', 'style' => 'display: inline'] ?>
+                    <?php $arr = ['route' => 'empleado.reservas.update', 'method' => 'PUT', 'class' => 'form-inline', 'style' => 'display: inline'] ?>
                     @if($reserva->estado == 'pendiente')
                         {!! Form::open($arr) !!}
                         {!! Form::hidden('reserva_id', $reserva->id) !!}

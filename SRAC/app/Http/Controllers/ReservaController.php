@@ -137,7 +137,7 @@ class ReservaController extends Controller
      */
     public function update(Request $request)
     {
-        $reserva = Reserva::findOrFail($request->id);
+        $reserva = Reserva::findOrFail($request->reserva_id);
         if($request->operacion){
             $reserva->complete();
             $msg = 'la reserva '.$request->reserva_id.' ha sido completada';
