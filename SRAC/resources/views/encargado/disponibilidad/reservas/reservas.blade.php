@@ -34,9 +34,18 @@
                     @include('partials.estado_reserva_btn', ['estado' => $reserva->estado])
                 </td>
                 <td>
-                    @if($reserva->estado == 'pendiente')
-                        <a href="#" class="btn btn-success">Confirmar</a>
-                        <a href="#" class="btn btn-danger">Cancelar</a>
+                    <?php $arr = ['route' => 'empleado.reservas.update', 'method' => 'PUT', 'class' => 'form-inine', 'style' => 'display: inline'] ?>
+                    @if($reserva->estado == 'completada')
+                        {!! Form::open($arr) !!}
+                        {!! Form::hidden('reserva_id', $reserva->id) !!}
+                        {!! Form::hidden('operacion', true) !!}
+                        {!! Form::submit('Confirmar', ['class' => 'btn btn-success']) !!}
+                        {!! Form::close() !!}
+                        {!! Form::open($arr) !!}
+                        {!! Form::hidden('reserva_id', $reserva->id) !!}
+                        {!! Form::hidden('operacion', false) !!}
+                        {!! Form::submit('Cancelar', ['class' => 'btn btn-danger']) !!}
+                        {!! Form::close() !!}
                     @endif
                 </td>
             </tr>
