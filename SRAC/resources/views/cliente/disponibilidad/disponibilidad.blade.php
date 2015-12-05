@@ -36,20 +36,16 @@
                     $fecha_fin->setDate($anio, $mes, $dia + $i);
                     $fecha_fin->setTime($j + 1, 0);
                     $reserva = Reserva::createReserva($fecha_inicio, $fecha_fin, 1, Auth::user()->id);
-                    if (method_exists('SRAC\Reserva', 'getStatus')) {
-                        $estado = Reserva::getStatus($reserva);
-                    };
+                    $estado = Reserva::getStatus($reserva);
                     ?>
-                    @if(isset($estado))
-                        @if($estado == 'disponible')
-                            {!! Form::hidden('fecha_inicio', $fecha_inicio->getTimestamp(), ['class' => 'form-control']  ) !!}
-                            {!! Form::hidden('fecha_fin', $fecha_fin->getTimestamp(), ['class' => 'form-control']) !!}
-                            {!! Form::submit('Reservar', ['class' => 'btn btn-primary']) !!}
-                        @elseif($estado == 'no disponible')
-                            <a class="btn btn-default">No Disponible</a>
-                        @else
-                            @include('partials.estado_reserva_btn')
-                        @endif
+                    @if($estado == 'disponible')
+                        {!! Form::hidden('fecha_inicio', $fecha_inicio->getTimestamp(), ['class' => 'form-control']  ) !!}
+                        {!! Form::hidden('fecha_fin', $fecha_fin->getTimestamp(), ['class' => 'form-control']) !!}
+                        {!! Form::submit('Reservar', ['class' => 'btn btn-primary']) !!}
+                    @elseif($estado == 'no disponible')
+                        <a class="btn btn-danger">No Disponible</a>
+                    @else
+                        @include('partials.estado_reserva_btn')
                     @endif
                     {!! Form::close() !!}
                 </td>

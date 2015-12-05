@@ -4,9 +4,9 @@
 @endsection
 @section('user_contenido')
     <?php
-        use SRAC\User;
-        use SRAC\Reserva;
-        ?>
+    use SRAC\User;
+    use SRAC\Reserva;
+    ?>
     <div class="btn btn-default" id="filter_btn">Filtros <span class="caret"></span></div>
     <table class="table" id="filter_table">
         <thead>
@@ -27,8 +27,10 @@
                 <td>{{User::where('id', $reserva->user_id)->get()[0]->name}}</td>
                 <td>{{$reserva->fecha_inicio}}</td>
                 <td>{{$reserva->fecha_fin}}</td>
-                <td>{{$reserva->numero_canchas}}</td>
-                <td>{{$reserva->estado}}</td>
+                <td><div class="badge">{{$reserva->numero_canchas}}</div></td>
+                <td>
+                    @include('partials.estado_reserva_btn', ['estado' => $reserva->estado])
+                </td>
                 <td><a href="#" class="btn btn-primary">Ver</a></td>
             </tr>
         @endforeach

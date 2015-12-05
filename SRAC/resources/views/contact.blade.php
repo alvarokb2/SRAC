@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('path')
-    @parent > Contacto
+    @parent > @lang('navbar.contact')
 @endsection
 @section('contenido')
     <div class="container-fluid">
