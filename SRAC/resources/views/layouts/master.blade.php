@@ -7,9 +7,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>@yield('titulo', 'SRAC')</title>
     {!! Html::style('assets/layoutPrincipal/css/bootstrap.min.css') !!}
+    {!! Html::style('assets/layoutPrincipal/css/jquery.datetimepicker.css') !!}
     {!! Html::style('assets/layoutPrincipal/css/style.css') !!}
     {!! Html::script('assets/layoutPrincipal/js/jquery.min.js') !!}
     {!! Html::script('assets/layoutPrincipal/js/bootstrap.min.js') !!}
+    {!! Html::script('assets/layoutPrincipal/js/jquery.datetimepicker.full.min.js') !!}
     {!! Html::script('assets/layoutPrincipal/js/scripts.js') !!}
 </head>
 <body>

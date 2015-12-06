@@ -2,11 +2,15 @@
 
 $(document).ready(function () {
     $('#filter_btn').createFilterTable('#filter_table');
+
+    $('.datetimepicker').datetimepicker({
+        mask: '9999/19/39 29:00'
+    });
 });
 
 (function () {
     $.prototype.createFilterTable = function (tableId) {
-        var allow = $('<div/>',{class:'filter'});
+        var allow = $('<div/>', {class: 'filter'});
         var filterBtn = $(this).clone();
         allow.append(filterBtn);
         $(this).replaceWith(allow);

@@ -5,18 +5,18 @@
 @section('user_contenido')
     <div class="col-md-8">
         {!! Form::open(['route' => 'empleado.reservas', 'method' => 'POST']) !!}
-        <input type="hidden" name="id" value="{{isset($user) ? $user->id : 0}}">
+        {!! Form::hidden('user_id', isset($user) ? $user->id : 0) !!}
         <div class="form-group">
             {!! Form::label('fecha_inicio', 'Fecha Inicio') !!}
             {!! Form::text('fecha_inicio', '', [
-            'class'         => 'form-control',
+            'class'         => 'form-control datetimepicker',
             'placeholder'   => '',
             'required']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('fecha_fin', 'Fecha Fin') !!}
             {!! Form::text('fecha_fin', '', [
-            'class'         => 'form-control',
+            'class'         => 'form-control datetimepicker',
             'placeholder'   => '',
             'required']) !!}
         </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="form-group">
             {!! Form::label('numero_canchas', 'Numero de Canchas') !!}
-            <select class="form-control">
+            <select name="numero_canchas" class="form-control">
                 @for($index = 1; $index <= 7; $index++)
                     <option>{{$index}}</option>
                 @endfor
