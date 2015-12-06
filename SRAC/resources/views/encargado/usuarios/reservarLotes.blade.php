@@ -4,7 +4,7 @@
 @endsection
 @section('user_contenido')
     <div class="col-md-8">
-        {!! Form::open(['route' => 'empleado.reservas', 'method' => 'POST']) !!}
+        {!! Form::open(['route' => 'encargado.usuarios.reservarLotes', 'method' => 'POST']) !!}
         {!! Form::hidden('user_id', isset($user) ? $user->id : 0) !!}
         <div class="form-group">
             {!! Form::label('fecha_inicio', 'Fecha Inicio') !!}
