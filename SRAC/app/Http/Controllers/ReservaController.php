@@ -84,6 +84,30 @@ class ReservaController extends Controller
         return Redirect::route('cliente.reservas');
     }
 
+    public function storeMany(Request $request){
+        $fecha_inicio = (new DateTime())->setTimestamp($request->fecha_inicio);
+        $fecha_fin = (new DateTime())->setTimestamp($request->fecha_fin);
+
+        $dias = array($request->lunes,
+            $request->martes,
+            $request->miercoles,
+            $request->jueves,
+            $request->viernes,
+            $request->sabado,
+            $request->domingo);
+        $numero_canchas = $request->numero_canchas;
+        $user_id = $request->user_id;
+
+        if($request->fecha_inicio < $request->fecha_fin){
+            Reserva::createMany($fecha_inicio,$fecha_fin,$dias,$numero_canchas,$user_id);
+            Session::flash('message-success', 'Reservas creadas correctamente');
+        }
+        else{
+            Session::flash('message-error', 'Error al crear reservas');
+        }
+        return Redirect::route('empleado.reservas');
+    }
+
     public function reservarLotes($user_id){
         $user = User::findOrFail($user_id);
         return view('encargado.usuarios.reservarLotes')->with('user', $user);
@@ -100,21 +124,6 @@ class ReservaController extends Controller
         $reserva = Reserva::findOrFail($id);
         return view('encargado.disponibilidad.reservas.reserva')->with('reserva', $reserva);
     }
-
-
-    /**
-     * muestra las reservas pendientes del usuario
-     *
-     * @param  int : user_id
-     * @return
-     * devuelve la vista
-     */
-    public function showReservasUsuario($user_id){
-        $user_name = User::findOrFail($user_id)->name;
-        $reservas = User::findOrFail($user_id)->reservas()->where('estado', '=', 'pendiente')->get();
-        return view('encargado.usuarios.reservas')->with('reservas', $reservas)->with('user_name', $user_name);
-    }
-
 
     /**
      * Show the form for editing the specified resource.

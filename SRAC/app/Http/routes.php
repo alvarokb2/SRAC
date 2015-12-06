@@ -57,6 +57,8 @@ Route::group(['prefix' => 'cliente'], function(){
             'store'     => 'cliente.reservas.store',
         ]
     ]);
+
+
 /*
     Route::get('reserva/historial', [
         'uses'  => 'ReservaController@index',
@@ -114,15 +116,18 @@ Route::group(['prefix' => 'empleado'], function(){
             'update'    => 'empleado.reservas.update',
             ]
         ]);
-    Route::get('showreservasusuario/{user_id}', [
-        'uses'  => 'ReservaController@showReservasUsuario',
-        'as'    => 'empleado.reservas.showreservasusuario',
-    ]);
 
     Route::get('reservarlotes/{user_id}', [
         'uses'  => 'ReservaController@reservarLotes',
         'as'    => 'empleado.reservas.reservarlotes',
     ]);
+
+    Route::post('storemany', [
+        'uses'  => 'ReservaController@storeMany',
+        'as'    => 'empleado.reservas.storeMany',
+    ]);
+
+
 
     Route::group(['prefix' => 'admin'], function(){
 
