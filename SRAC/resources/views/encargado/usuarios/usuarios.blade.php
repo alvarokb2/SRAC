@@ -27,20 +27,43 @@
                     <td>{{$user->name}}</td>
                     <td>{{$user->email}}</td>
                     <td>{{$user->role}}</td>
-                    <td><a class="btn btn-primary">{{$user->getStatus()}}</a></td>
+                    <td>
+                        <!--
+                        if($this->isSanctioned(5)){
+                        return 'suspendido';
+                        }
+                        elseif($this->hasPending()){
+                        return 'pendiente';
+                        }
+                        else{
+                        return 'disponible';
+                        } -->
+                        <?php $status = $user->getStatus() ?>
+                        @if($status == 'pendiente')
+                            <a href="#" class="btn btn-warning">{{$user->getStatus()}}</a>
+                        @elseif($status == 'suspendido')
+                            <a href="#" class="btn btn-danger">{{$user->getStatus()}}</a>
+                        @elseif($status == 'disponible')
+                            <a href="#" class="btn btn-primary">{{$user->getStatus()}}</a>
+                        @else
+                            <a href="#" class="btn btn-default">Estado no Controlado</a>
+                        @endif
+                    </td>
                     <td>
                         @if(Auth::user()->role == 'administrador')
                             <a href="{{route('empleado.usuarios.edit', $user->id)}}" class="btn btn-warning">Editar</a>
                             @if(Auth::user() != $user)
-                                <a href="{{route('empleado.usuarios.destroy', $user->id)}}"
-                                   class="btn btn-danger">Borrar</a>
+                                <div class="btn btn-danger" data-toggle="modal" data-target="#modal{{$user->id}}">
+                                    Borrar
+                                </div>
                             @endif
                         @else
                             @if($user->role == 'cliente' or $user->role == 'socio')
                                 <a href="{{route('empleado.usuarios.edit', $user->id)}}"
                                    class="btn btn-warning">Editar</a>
-                                <a href="{{route('empleado.usuarios.destroy', $user->id)}}"
-                                   class="btn btn-danger">Borrar</a>
+                                <div class="btn btn-danger" data-toggle="modal" data-target="#modal{{$user->id}}">
+                                    Borrar
+                                </div>
                             @else
                                 <a href="#" class="btn btn-primary">No Disponible</a>
                             @endif
@@ -48,6 +71,9 @@
                         <a href="{{route('empleado.reservas.reservarlotes', $user->id)}}" class="btn btn-primary">Reservar
                             Lotes</a>
                     </td>
+                    <div id="modal{{$user->id}}" class="modal fade" role="dialog">
+                        @include('encargado.usuarios.confirmar_borrar')
+                    </div>
                 </tr>
             @endforeach
             </tbody>

@@ -5,7 +5,6 @@
 @section('contenido')
     <div class="container-fluid">
         <div class="row">
-            @include('alerts.errors')
             <div class="col-md-8">
                 {!! Form::open(['route' => 'usuario.store', 'method' => 'POST']) !!}
                 <div class="form-group">
@@ -40,8 +39,6 @@
                     {!! Form::submit( 'Registrar', ['class' => 'btn btn-primary']) !!}
                 </div>
                 {!! Form::close() !!}
-            </div>
-            <div class="col-md-4">
             </div>
         </div>
     </div>
