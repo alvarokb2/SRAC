@@ -7,7 +7,7 @@
         <div class="btn btn-default" id="filter_btn" data-content="#filter_content" data-target="#filter_table">Filtros
             <span class="caret"></span></div>
         <div class="filter">
-            <div id="filter_content" class="jumbotron form-horizontal"></div>
+            <div id="filter_content" class="collapse jumbotron form-horizontal"></div>
         </div>
         <table class="table" id="filter_table">
             <thead>
@@ -28,23 +28,13 @@
                     <td>{{$user->email}}</td>
                     <td>{{$user->role}}</td>
                     <td>
-                        <!--
-                        if($this->isSanctioned(5)){
-                        return 'suspendido';
-                        }
-                        elseif($this->hasPending()){
-                        return 'pendiente';
-                        }
-                        else{
-                        return 'disponible';
-                        } -->
                         <?php $status = $user->getStatus() ?>
                         @if($status == 'pendiente')
-                            <a href="#" class="btn btn-warning">{{$user->getStatus()}}</a>
+                            <a href="#" class="btn btn-warning">{{$status}}</a>
                         @elseif($status == 'suspendido')
-                            <a href="#" class="btn btn-danger">{{$user->getStatus()}}</a>
+                            <a href="#" class="btn btn-danger">{{$status}}</a>
                         @elseif($status == 'disponible')
-                            <a href="#" class="btn btn-primary">{{$user->getStatus()}}</a>
+                            <a href="#" class="btn btn-primary">{{$status}}</a>
                         @else
                             <a href="#" class="btn btn-default">Estado no Controlado</a>
                         @endif

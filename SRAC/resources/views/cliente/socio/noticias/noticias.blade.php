@@ -3,22 +3,9 @@
     @parent > Noticias
 @endsection
 @section('user_contenido')
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Titulo</th>
-            <th>Fecha</th>
-            <th>Descripcion</th>
-        </tr>
-        </thead>
-        <tbody>
+    <div class="noticias panel-group">
         @foreach($noticias as $noticia)
-            <tr>
-                <td>{{$noticia->titulo}}</td>
-                <td>{{$noticia->updated_at}}</td>
-                <td>{{$noticia->descripcion}}</td>
-            </tr>
+            @include('cliente.socio.noticias.noticia')
         @endforeach
-        </tbody>
-    </table>
+    </div>
 @endsection
