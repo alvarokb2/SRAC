@@ -4,20 +4,18 @@
 @endsection
 @section('user_contenido')
     <div class="col-md-8">
-        {!! Form::open(['route' => 'encargado.usuarios.reservarLotes', 'method' => 'POST']) !!}
+        {!! Form::open(['route' => 'empleado.reservas.storeMany', 'method' => 'POST']) !!}
         {!! Form::hidden('user_id', isset($user) ? $user->id : 0) !!}
         <div class="form-group">
             {!! Form::label('fecha_inicio', 'Fecha Inicio') !!}
             {!! Form::text('fecha_inicio', '', [
             'class'         => 'form-control datetimepicker',
-            'placeholder'   => '',
             'required']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('fecha_fin', 'Fecha Fin') !!}
             {!! Form::text('fecha_fin', '', [
             'class'         => 'form-control datetimepicker',
-            'placeholder'   => '',
             'required']) !!}
         </div>
         <div class="form-group">

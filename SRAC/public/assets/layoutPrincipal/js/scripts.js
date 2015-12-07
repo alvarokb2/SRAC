@@ -95,7 +95,7 @@ $(document).ready(function () {
             textBox.on('input', handler);
         });
         content.append(fg1).append(fg2).append(fg3);
-        content.hide();
+        content.hide(0);
         filterBtn.click(function (e) {
             animationOptions.contentToggle(content);
         });
