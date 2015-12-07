@@ -63,6 +63,7 @@ class ReservaController extends Controller
             $fecha_inicio = (new DateTime())->setTimestamp($request->fecha_inicio);
             $fecha_fin = (new DateTime())->setTimestamp($request->fecha_fin);
 
+
             $reserva = Reserva::createReserva(
                 $fecha_inicio,
                 $fecha_fin,
@@ -85,9 +86,9 @@ class ReservaController extends Controller
     }
 
     public function storeMany(Request $request){
-        $fecha_inicio = (new DateTime())->setTimestamp($request->fecha_inicio);
-        $fecha_fin = (new DateTime())->setTimestamp($request->fecha_fin);
 
+        $fecha_inicio = DateTime::createFromFormat('Y/m/d H:i', $request->fecha_inicio);
+        $fecha_fin = DateTime::createFromFormat('Y/m/d H:i', $request->fecha_fin);
         $dias = array($request->lunes,
             $request->martes,
             $request->miercoles,
@@ -99,8 +100,8 @@ class ReservaController extends Controller
         $user_id = $request->user_id;
 
         if($request->fecha_inicio < $request->fecha_fin){
-            Reserva::createMany($fecha_inicio,$fecha_fin,$dias,$numero_canchas,$user_id);
-            Session::flash('message-success', 'Reservas creadas correctamente');
+            $msg = Reserva::createMany($fecha_inicio,$fecha_fin,$dias,$numero_canchas,$user_id);
+            Session::flash('message-success', $msg);
         }
         else{
             Session::flash('message-error', 'Error al crear reservas');

@@ -2,6 +2,7 @@
 
 namespace SRAC;
 
+use Faker\Provider\tr_TR\DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -54,37 +55,56 @@ class Reserva extends Model
         }
     }
 
-
     public static function createMany($fecha_inicio, $fecha_fin, $dias,$numero_canchas, $user_id){
-        $fecha_i = (new \DateTime())->setTimestamp($fecha_inicio->getTimestamp());
-        $fecha_f = (new \DateTime())->setTimestamp($fecha_inicio->getTimestamp());
+        $fecha_inicio_int = $fecha_inicio->getTimestamp();
+        $fecha_fin_int = $fecha_fin->getTimestamp();
 
-        $hora_f = date('H', $fecha_fin->getTimestamp());
-        $hora_i = date('H', $fecha_inicio->getTimestamp());
-        $fecha_f->setTime($hora_i + 1,0);
-        $reserva = Reserva::createReserva($fecha_i,$fecha_f,$numero_canchas,$user_id);
+        $array = array();
+        $hasError = false;
+        $msg = '';
 
-        while($fecha_f <= $fecha_fin){
-            //si el dia corresponde
-            if(in_array(date('N', $fecha_i->getTimestamp()), $dias)){
-                //iterador horarios del dia
-                for($i = $hora_i ; $i < $hora_f; $i++ ){
-                    $reserva = Reserva::createReserva($fecha_i,$fecha_f,$numero_canchas, $user_id, 'completada');
+        $anio = date('Y', $fecha_inicio_int);
+        $mes = date('m', $fecha_inicio_int);
+        $dia = date('d', $fecha_inicio_int);
+
+        $hora_inicio = date('H', $fecha_inicio_int);
+        $hora_fin = date('H', $fecha_fin_int);
+
+        $dias_int = floor(($fecha_fin_int - $fecha_inicio_int) / (60 * 60 *24));
+
+        for($dia_int = 0; $dia_int <= $dias_int; $dia_int++){
+            for($hora = $hora_inicio; $hora < $hora_fin; $hora++){
+                $fecha_inicio_aux = new \DateTime();
+                $fecha_fin_aux = new \DateTime();
+
+                $fecha_inicio_aux->setDate($anio, $mes, $dia + $dia_int);
+                $fecha_inicio_aux->setTime($hora, 0);
+
+                $fecha_fin_aux->setTimestamp($fecha_inicio_aux->getTimestamp());
+                $fecha_fin_aux->setTime($hora + 1, 0);
+
+                if(in_array(date('N', $fecha_inicio_aux->getTimestamp()), $dias)) {
+                    $reserva = Reserva::createReserva($fecha_inicio_aux, $fecha_fin_aux, $numero_canchas, $user_id, 'completada');
                     if(Reserva::available($reserva)){
-                        $reserva->save();
-                        $reserva->fecha_inicio->setTime($i + 1,0);
-                        $reserva->fecha_fin->setTime($i + 2,0);
+                        $array[] = $reserva;
+
+                    }
+                    else{
+                        $hasError = true;
+                        $msg = $msg.'Error en la fecha '.$fecha_inicio_aux->format('Y/m/d').'<br>';
                     }
                 }
             }
-            //cambio de dia y vuelta al horario de inicio
-            $reserva->fecha_inicio->add(new \DateInterval('P1D'));
-            $reserva->fecha_inicio->setTime($hora_i,0);
-            $reserva->fecha_fin->add(new \DateInterval('P1D'));
-            $reserva->fecha_fin->setTime($hora_i+1,0);
         }
-    }
 
+        if(!$hasError){
+            foreach($array as $item){
+                $item->save();
+            }
+            $msg = 'Reservas realizadas con exito';
+        }
+        return $msg;
+    }
 
 
     /**
