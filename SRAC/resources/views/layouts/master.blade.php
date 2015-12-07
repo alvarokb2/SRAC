@@ -18,7 +18,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <h3 class="text-center">Sistema de Reserva y Arriendo de Canchas</h3>
+            <div id="encabezado">
+                <h2 align="center"><font face="Hotel Coral Essex" size="30" color="#ffd700"><br>Sistema de Reservas y Arriendo de Canchas</font></h2>
+
+            </div>
         </div>
         <div class="col-md-12">
             @include('partials.navbar')
