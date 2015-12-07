@@ -7,7 +7,11 @@
     use SRAC\User;
     use SRAC\Reserva;
     ?>
-    <div class="btn btn-default" id="filter_btn">Filtros <span class="caret"></span></div>
+    <div class="btn btn-default" id="filter_btn" data-content="#filter_content" data-target="#filter_table">Filtros
+        <span class="caret"></span></div>
+    <div class="filter">
+        <div id="filter_content" class="jumbotron form-horizontal"></div>
+    </div>
     <table class="table" id="filter_table">
         <thead>
         <tr>

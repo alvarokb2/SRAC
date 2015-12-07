@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('path')
-    @parent > Home
+    @parent > @lang('navbar.home')
 @endsection
 @section('contenido')
     <div class="container-fluid">

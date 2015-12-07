@@ -4,6 +4,7 @@
 
 .filter .jumbotron {
     padding: 10px 40px 10px 40px;
+    margin: 10px 0px 10px 0px;
 }
 
 .filter .input-sm {

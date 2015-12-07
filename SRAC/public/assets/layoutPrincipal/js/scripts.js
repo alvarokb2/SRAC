@@ -1,24 +1,31 @@
 // Empty JS for your own code to be here
 
 $(document).ready(function () {
-    $('#filter_btn').createFilterTable('#filter_table');
-
+    $('#filter_btn').createFilterTable();
     $('.datetimepicker').datetimepicker({
         mask: '9999/19/39 29:00'
     });
 });
 
 (function () {
-    $.prototype.createFilterTable = function (tableId) {
-        var allow = $('<div/>', {class: 'filter'});
-        var filterBtn = $(this).clone();
-        allow.append(filterBtn);
-        $(this).replaceWith(allow);
-        var table = $(tableId);
+    $.prototype.createFilterTable = function () {
+        var animationOptions = {
+            contentToggle: function (e) {
+                e.slideToggle(50);
+            },
+            rowHide: function (e) {
+                e.fadeOut('fast');
+            },
+            rowShow: function (e) {
+                e.fadeIn('fast');
+            }
+        };
+        var filterBtn = $(this);
+        var content = $(filterBtn.data('content'));
+        var table = $(filterBtn.data('target'));
         var header = table.find('thead');
         var body = table.find('tbody');
         var titles = header.find('th');
-        var content = $('<div/>', {class: 'jumbotron form-horizontal'});
         var fg1 = $('<div/>', {class: 'form-group'});
         var fg2 = fg1.clone();
         var fg3 = fg1.clone();
@@ -40,14 +47,14 @@ $(document).ready(function () {
         clearBtn.click(function () {
             var textBoxes = content.find('input[type="text"]');
             textBoxes.val('');
-            content.hide();
+            animationOptions.contentToggle(content);
             handler();
         });
         fg1.append(operador.append(oAnd).append(oOr));
         var handler = function () {
-            var textboxes = content.find('input[type="text"]');
+            var textBoxes = content.find('input[type="text"]');
             var totalVal = "";
-            textboxes.each(function () {
+            textBoxes.each(function () {
                 totalVal += $(this).val()
             });
             var rows = body.find('tr');
@@ -55,7 +62,7 @@ $(document).ready(function () {
                 var row = $(this);
                 var datos = row.find('td');
                 var show = oAnd.hasClass('active');
-                textboxes.each(function () {
+                textBoxes.each(function () {
                     var text = $(this).val();
                     var index = parseInt($(this).prop('index'));
                     var dato = datos.get(index).innerText;
@@ -71,26 +78,26 @@ $(document).ready(function () {
                     }
                 });
                 if (show) {
-                    row.show();
+                    animationOptions.rowShow(row);
                 } else {
-                    row.hide();
+                    animationOptions.rowHide(row);
                 }
             });
         }
         titles.each(function (n) {
             var label = $('<label/>', {text: $(this).text(), class: 'control-label col-sm-2'});
             var div = $('<div/>', {class: 'col-sm-10'});
-            var textbox = $('<input/>', {type: 'text', class: 'form-control input-sm'});
+            var textBox = $('<input/>', {type: 'text', class: 'form-control input-sm'});
             var fg = $('<div/>', {class: 'form-group'});
-            fg.append(label).append(div.append(textbox));
-            textbox.prop('index', n);
+            fg.append(label).append(div.append(textBox));
+            textBox.prop('index', n);
             fg2.append(fg);
-            textbox.on('input', handler);
+            textBox.on('input', handler);
         });
         content.append(fg1).append(fg2).append(fg3);
-        content.hide();
-        filterBtn.after(content).click(function (e) {
-            content.toggle();
+        content.hide(0);
+        filterBtn.click(function (e) {
+            animationOptions.contentToggle(content);
         });
     };
 })();
