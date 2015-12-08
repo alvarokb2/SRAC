@@ -139,7 +139,9 @@ class Reserva extends Model
         $rango = Reserva::getRange($reserva);
         $response = 0;
         foreach($rango as $aux){
-                $response = $response + $aux->numero_canchas;
+                if($aux->role != 'cancelada'){
+                    $response = $response + $aux->numero_canchas;
+                }
         }
         return $response;
     }
