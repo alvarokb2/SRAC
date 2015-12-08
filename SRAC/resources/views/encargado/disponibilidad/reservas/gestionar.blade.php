@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="form-group">
-            {!! Form::submit('Reservar', ['class' => 'btn btn-primary']) !!}
+            {!! Form::submit('Aceptar', ['class' => 'btn btn-primary']) !!}
             <a href="{{route('empleado.reservas')}}" class="btn btn-danger">Cancelar</a>
         </div>
         {!! Form::close() !!}
