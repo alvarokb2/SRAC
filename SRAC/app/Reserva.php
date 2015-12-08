@@ -41,6 +41,7 @@ class Reserva extends Model
         $user = User::findOrFail($reserva->user_id);
 
         $aux = $user->reservas()->where('fecha_inicio', '=', $reserva->fecha_inicio)
+            ->where('estado', '!=', 'cancelada')
             ->get();
         if($aux->count() > 0){
             return $aux->first()->estado;
@@ -120,8 +121,8 @@ class Reserva extends Model
     }
 
     public static function cancelMany($fecha_inicio, $fecha_fin){
-        $reservas = Reserva::where('fecha_inicio', '>=', $reserva->fecha_inicio)
-            ->where('fecha_fin', '<=', $reserva->fecha_fin)
+        $reservas = Reserva::where('fecha_inicio', '>=', $fecha_inicio)
+            ->where('fecha_fin', '<=', $fecha_fin)
             ->get();
         foreach($reservas as $reserva){
             $reserva->cancel();
@@ -147,7 +148,7 @@ class Reserva extends Model
         $rango = Reserva::getRange($reserva);
         $response = 0;
         foreach($rango as $aux){
-                if($aux->role != 'cancelada'){
+                if($aux->estado != 'cancelada'){
                     $response = $response + $aux->numero_canchas;
                 }
         }

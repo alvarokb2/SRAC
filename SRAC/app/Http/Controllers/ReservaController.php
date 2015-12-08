@@ -131,6 +131,8 @@ class ReservaController extends Controller
         $fecha_inicio = DateTime::createFromFormat('Y/m/d H:i', $request->fecha_inicio);
         $fecha_fin = DateTime::createFromFormat('Y/m/d H:i', $request->fecha_fin);
 
+        $actual = new \DateTime();
+
         $dias = array($request->lunes,
             $request->martes,
             $request->miercoles,
@@ -139,12 +141,22 @@ class ReservaController extends Controller
             $request->sabado,
             $request->domingo);
 
-        Reserva::cancelMany($fecha_inicio,$fecha_fin);
+        if($fecha_inicio >= $actual){
 
-        if($request->cancelar_reservar){
+            Reserva::cancelMany($fecha_inicio,$fecha_fin);
 
-            Reserva::createMany($fecha_inicio,$fecha_fin,$dias,Utilidades::$numero_canchas,Auth::user()->id);
+            $msg = 'Las reservas en el rango de fechas han sido canceladas';
+
+            if($request->cancelar){
+                $msg = Reserva::createMany($fecha_inicio,$fecha_fin,$dias,Utilidades::$numero_canchas,Auth::user()->id);
+            }
         }
+        else{
+            $msg = 'La fecha y hora iniciales deben ser mayores que la hora actual';
+        }
+        Session::flash('message-success', $msg);
+        return Redirect::route('empleado.reservas');
+
 
     }
 
