@@ -4,6 +4,7 @@
 @endsection
 @section('user_contenido')
     <?php
+    use SRAC\Utilidades;
     use SRAC\Reserva;
     $user = Auth::user();
     $user_status = $user->getStatus();
@@ -14,7 +15,7 @@
         );
         $fecha_habilitacion = new DateTime();
         $fecha_habilitacion->setTimestamp($fecha_perdida->getTimestamp());
-        $fecha_habilitacion->add(new DateInterval('P5D'));
+        $fecha_habilitacion->add(new DateInterval('P' . Utilidades::$dias_castigo . 'D'));
     }
     if ($user_status == 'pendiente') {
         $fecha_pendiente = DateTime::createFromFormat(

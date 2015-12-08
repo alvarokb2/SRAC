@@ -4,6 +4,7 @@
 @endsection
 @section('user_contenido')
     <?php
+    use SRAC\Utilidades;
     use SRAC\Reserva;
     use SRAC\User;
     $anio = date('Y'); $mes = date('m'); $dia = date('d');
@@ -62,17 +63,18 @@
                                 @for($index = 0; $index < $count; $index++)
                                     <?php
                                     $reserva = $reservas_aux[$index];
-                                    $ocupadas = $ocupadas + $reserva->numero_canchas;
+                                    $estado = Reserva::getStatus($reserva);
+                                    $ocupadas = $ocupadas + ($estado == 'cancelada' ? 0 : $reserva->numero_canchas);
                                     ?>
                                     <li>
                                         <a>
                                             ({{$reserva->id}}) {{User::where('id', $reserva->user_id)->get()[0]->name}}
                                             <span class="badge">{{$reserva->numero_canchas}}</span>
-                                            @include('partials.estado_reserva_btn', ['estado' => Reserva::getStatus($reserva)])
+                                            @include('partials.estado_reserva_btn', ['estado' => $estado])
                                         </a>
                                     </li>
                                 @endfor
-                                <?php $disponibles = 7 - $ocupadas ?>
+                                <?php $disponibles = Utilidades::$numero_canchas - $ocupadas ?>
                                 @if($disponibles == 0)
                                     <li><a>No quedan canchas <span class="btn btn-primary">disponibles</span></a></li>
                                 @elseif($disponibles == 1)
