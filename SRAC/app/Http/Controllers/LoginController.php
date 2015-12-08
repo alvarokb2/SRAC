@@ -16,7 +16,7 @@ use SRAC\User;
 class LoginController extends Controller
 {
     public function __construct(){
-        $this->middleware('guest');
+        $this->middleware('guest', ['only' => ['store', 'create']]);
     }
 
     /**

@@ -19,8 +19,8 @@ class ReservaController extends Controller
 
     public function __construct(){
         $this->middleware('auth');
-        $this->middleware('cliente|socio', ['only' => 'store']);
-        $this->middleware('encargado|administrador', ['only' => ['storeMany', 'reservarLotes', 'update']]);
+        $this->middleware('cliente', ['only' => 'store']);
+        $this->middleware('encargado', ['only' => ['storeMany', 'reservarLotes', 'update']]);
     }
 
 

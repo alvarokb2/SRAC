@@ -15,7 +15,7 @@ class Encargado
      */
     public function handle($request, Closure $next)
     {
-        if($request->user()->role == 'encargado'){
+        if($request->user()->role == 'encargado' or $request->user()->role == 'administrador'){
             return $next($request);
         }
         return redirect('/');

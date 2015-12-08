@@ -16,7 +16,7 @@ class UsuarioController extends Controller
 {
     public function __construct(){
         $this->middleware('guest', ['only' => ['create' , 'store']]);
-        $this->middleware('encargado|administrador', ['except' => ['create', 'store']]);
+        $this->middleware('encargado', ['except' => ['create', 'store']]);
     }
 
     /**
