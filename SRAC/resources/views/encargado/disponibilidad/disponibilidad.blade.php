@@ -4,7 +4,9 @@
 @endsection
 @section('user_contenido')
     <?php
-    $año = date('Y'); $mes = date('m'); $dia = date('d');
+    use SRAC\Reserva;
+    use SRAC\User;
+    $anio = date('Y'); $mes = date('m'); $dia = date('d');
     ?>
     <table class="table">
         <thead>
@@ -13,7 +15,7 @@
             @for($d = 0; $d < Auth::user()->visibleDays(); $d++)
                 <?php
                 $tiempo = new DateTime();
-                $tiempo->setDate($año, $mes, $dia + $d);
+                $tiempo->setDate($anio, $mes, $dia + $d);
                 $tiempo->setTime(0, 0);
                 ?>
                 <th class="text-center">{!! $tiempo->format('d-m-Y') !!}</th>
@@ -28,15 +30,52 @@
                 <td class="text-center">
                     {!! Form::open(['route' => 'cliente.reservas.store', 'method' => 'POST']) !!}
                     <?php
-                    $tiempo = new DateTime();
-                    $tiempo->setDate($año, $mes, $dia + $i);
-                    $tiempo->setTime($j, 0);
+                    $fecha_inicio = new DateTime();
+                    $fecha_inicio->setDate($anio, $mes, $dia + $i);
+                    $fecha_inicio->setTime($j, 0);
+                    $fecha_fin = new DateTime();
+                    $fecha_fin->setDate($anio, $mes, $dia + $i);
+                    $fecha_fin->setTime($j + 1, 0);
+                    $reserva_aux = Reserva::createReserva($fecha_inicio, $fecha_fin, 1, Auth::user()->id);
+                    $estado = Reserva::getStatus($reserva_aux);
+                    $reservas_aux = Reserva::where('fecha_inicio', $fecha_inicio->format('Y-m-d H:i:s'))->get();
+                    $count = $reservas_aux->count();
                     ?>
-                    {!! Form::hidden('fecha_inicio', $tiempo->getTimestamp(), ['class' => 'form-control']  ) !!}
-                    <?php $tiempo->setTime($j + 1, 0) ?>
-                    {!! Form::hidden('fecha_fin', $tiempo->getTimestamp(), ['class' => 'form-control']) !!}
-                    <a class="btn btn-primary">Reservar</a>
-                    {!! Form::close() !!}
+                    <div class="dropdown">
+                        @if($estado == 'disponible')
+                            <div class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Disponible
+                                @if($count > 0)
+                                    <span class="badge">{{$count}}</span> <span class="caret"/>
+                                @endif
+                            </div>
+                        @else
+                            <a class="btn btn-danger dropdown-toggle" data-toggle="dropdown">No Disponible
+                                @if($count > 0)
+                                    <span class="badge">{{$count}}</span> <span class="caret"/>
+                                @endif
+                            </a>
+                        @endif
+                        @if($count > 0)
+                            <?php
+
+                            ?>
+                            <ul class="dropdown-menu dropdown-menu-left">
+                                @for($index = 0; $index < 7; $index++)
+                                    @if($index < $count)
+                                        <?php $reserva = $reservas_aux[$index] ?>
+                                        <li>
+                                            <a>
+                                                ({{$reserva->id}}) {{User::where('id', $reserva->user_id)->get()[0]->name}}
+                                                @include('partials.estado_reserva_btn', ['estado' => Reserva::getStatus($reserva)])
+                                            </a>
+                                        </li>
+                                    @else
+                                        <li><a>---</a></li>
+                                    @endif
+                                @endfor
+                            </ul>
+                        @endif
+                    </div>
                 </td>
             @endfor
         </tr>
