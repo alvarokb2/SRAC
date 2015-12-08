@@ -13,6 +13,7 @@ use SRAC\Http\Requests;
 use SRAC\Http\Controllers\Controller;
 use SRAC\Reserva;
 use SRAC\User;
+use SRAC\Utilidades;
 
 class ReservaController extends Controller
 {
@@ -121,6 +122,32 @@ class ReservaController extends Controller
         $user = User::findOrFail($user_id);
         return view('encargado.usuarios.reservarLotes')->with('user', $user);
     }
+
+    public function cancelarReservas(){
+        return view('encargado.disponibilidad.reservas.gestionar');
+    }
+
+    public function cancelar(Request $request){
+        $fecha_inicio = DateTime::createFromFormat('Y/m/d H:i', $request->fecha_inicio);
+        $fecha_fin = DateTime::createFromFormat('Y/m/d H:i', $request->fecha_fin);
+
+        $dias = array($request->lunes,
+            $request->martes,
+            $request->miercoles,
+            $request->jueves,
+            $request->viernes,
+            $request->sabado,
+            $request->domingo);
+
+        Reserva::cancelMany($fecha_inicio,$fecha_fin);
+
+        if($request->cancelar_reservar){
+
+            Reserva::createMany($fecha_inicio,$fecha_fin,$dias,Utilidades::$numero_canchas,Auth::user()->id);
+        }
+
+    }
+
 
     /**
      * Display the specified resource.

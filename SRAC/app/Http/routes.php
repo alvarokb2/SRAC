@@ -148,6 +148,17 @@ Route::group(['prefix' => 'empleado'], function(){
             'uses'  => 'NoticiaController@destroy',
             'as'    => 'empleado.admin.noticias.destroy'
         ]);
+        Route::get('cancelarreservas', [
+            'uses'  => 'ReservaController@cancelarReservas',
+            'as'    => 'empleado.admin.cancelarReservas',
+        ]);
+        Route::post('cancelarreservas', [
+            'uses'  => 'ReservaController@cancelar',
+            'as'    => 'empleado.admin.cancelar',
+        ]);
+
+
+
 
     });
 
