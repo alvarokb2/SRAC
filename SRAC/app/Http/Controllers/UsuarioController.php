@@ -11,6 +11,7 @@ use SRAC\Http\Requests;
 use SRAC\Http\Requests\RegisterUserRequest;
 use SRAC\Http\Controllers\Controller;
 use SRAC\User;
+use SRAC\Reserva;
 
 
 class UsuarioController extends Controller
@@ -109,7 +110,7 @@ class UsuarioController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        $user->delete();
+        $user->deleteUser();
         $users = User::all();
         Session::flash('message-success', 'Usuario eliminado correctamente');
 
