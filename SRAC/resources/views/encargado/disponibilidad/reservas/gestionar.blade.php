@@ -1,10 +1,10 @@
 @extends('layouts.master_user')
 @section('path')
-    @parent > Usuarios ({{isset($user) ? $user->name : ''}}) > Reservar Lotes
+    @parent > Reservas > Gestionar Reservas
 @endsection
 @section('user_contenido')
     <div class="col-md-8">
-        {!! Form::open(['route' => 'empleado.reservas.storeMany', 'method' => 'POST']) !!}
+        {!! Form::open(['route' => 'empleado.admin.cancelar', 'method' => 'POST', 'role' => 'form']) !!}
         {!! Form::hidden('user_id', isset($user) ? $user->id : 0) !!}
         <div class="form-group">
             {!! Form::label('fecha_inicio', 'Fecha Inicio') !!}
@@ -31,16 +31,23 @@
             </div>
         </div>
         <div class="form-group">
-            {!! Form::label('numero_canchas', 'Numero de Canchas') !!}
-            <select name="numero_canchas" class="form-control">
-                @for($index = 1; $index <= \SRAC\Utilidades::$numero_canchas; $index++)
-                    <option>{{$index}}</option>
-                @endfor
-            </select>
+            <label>Opciones</label>
+            <div class="radio">
+                <label>
+                    {!! Form::radio('cancelar', '0', true) !!} Cancela totas las reservas que se encuentren
+                    entre
+                    las fechas indicadas.
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    {!! Form::radio('cancelar', '1', false) !!} Cancela y reserva todas las disponibilidades
+                </label>
+            </div>
         </div>
         <div class="form-group">
             {!! Form::submit('Reservar', ['class' => 'btn btn-primary']) !!}
-            <a href="{{route('empleado.usuarios')}}" class="btn btn-danger">Cancelar</a>
+            <a href="{{route('empleado.reservas')}}" class="btn btn-danger">Cancelar</a>
         </div>
         {!! Form::close() !!}
     </div>

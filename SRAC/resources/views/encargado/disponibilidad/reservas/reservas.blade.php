@@ -9,6 +9,9 @@
     ?>
     <div class="btn btn-default" id="filter_btn" data-content="#filter_content" data-target="#filter_table">Filtros
         <span class="caret"></span></div>
+    @if(Auth::user()->role == 'administrador')
+        <a href="{{route('empleado.admin.cancelarReservas')}}" class="btn btn-primary">Gestionar Reservas</a>
+    @endif
     <div class="filter">
         <div id="filter_content" class="collapse jumbotron form-horizontal"></div>
     </div>
