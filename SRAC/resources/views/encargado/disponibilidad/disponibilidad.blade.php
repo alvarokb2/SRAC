@@ -40,39 +40,44 @@
                     $estado = Reserva::getStatus($reserva_aux);
                     $reservas_aux = Reserva::where('fecha_inicio', $fecha_inicio->format('Y-m-d H:i:s'))->get();
                     $count = $reservas_aux->count();
+                    $count_max = Reserva::countMax($reserva_aux);
                     ?>
                     <div class="dropdown">
                         @if($estado == 'disponible')
                             <div class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Disponible
                                 @if($count > 0)
-                                    <span class="badge">{{$count}}</span> <span class="caret"/>
+                                    <span class="badge">{{$count_max}}</span> <span class="caret"/>
                                 @endif
                             </div>
                         @else
                             <a class="btn btn-danger dropdown-toggle" data-toggle="dropdown">No Disponible
                                 @if($count > 0)
-                                    <span class="badge">{{$count}}</span> <span class="caret"/>
+                                    <span class="badge">{{$count_max}}</span> <span class="caret"/>
                                 @endif
                             </a>
                         @endif
                         @if($count > 0)
-                            <?php
-
-                            ?>
                             <ul class="dropdown-menu dropdown-menu-left">
-                                @for($index = 0; $index < 7; $index++)
-                                    @if($index < $count)
-                                        <?php $reserva = $reservas_aux[$index] ?>
-                                        <li>
-                                            <a>
-                                                ({{$reserva->id}}) {{User::where('id', $reserva->user_id)->get()[0]->name}}
-                                                @include('partials.estado_reserva_btn', ['estado' => Reserva::getStatus($reserva)])
-                                            </a>
-                                        </li>
-                                    @else
-                                        <li><a>---</a></li>
-                                    @endif
+                                @for($index = 0; $index < $count; $index++)
+                                    <?php $reserva = $reservas_aux[$index] ?>
+                                    <li>
+                                        <a>
+                                            ({{$reserva->id}}) {{User::where('id', $reserva->user_id)->get()[0]->name}}
+                                            <span class="badge">{{$reserva->numero_canchas}}</span>
+                                            @include('partials.estado_reserva_btn', ['estado' => Reserva::getStatus($reserva)])
+                                        </a>
+                                    </li>
                                 @endfor
+                                <?php $disponibles = 7 - $index ?>
+                                @if($disponibles == 0)
+                                    <li><a>No quedan canchas <span class="btn btn-primary">disponibles</span></a></li>
+                                @elseif($disponibles == 1)
+                                    <li><a>Queda <span class="badge">{{$disponibles}}</span> cancha <span
+                                                class="btn btn-primary">disponible</span></a></li>
+                                @elseif($disponibles > 1)
+                                    <li><a>Quedan <span class="badge">{{$disponibles}}</span> canchas <span
+                                                class="btn btn-primary">disponibles</span></a></li>
+                                @endif
                             </ul>
                         @endif
                     </div>
