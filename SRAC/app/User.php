@@ -102,7 +102,7 @@ class User extends Model implements AuthenticatableContract,
     }
 
     public function getStatus(){
-        if($this->isSanctioned(Utilidades::$numero_canchas)){
+        if($this->isSanctioned(Utilidades::$dias_castigo)){
             return 'suspendido';
         }
         elseif($this->hasPending()){
