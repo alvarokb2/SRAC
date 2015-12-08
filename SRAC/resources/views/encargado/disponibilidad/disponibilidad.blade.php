@@ -58,8 +58,12 @@
                         @endif
                         @if($count > 0)
                             <ul class="dropdown-menu dropdown-menu-left">
+                                <?php $ocupadas = 0 ?>
                                 @for($index = 0; $index < $count; $index++)
-                                    <?php $reserva = $reservas_aux[$index] ?>
+                                    <?php
+                                    $reserva = $reservas_aux[$index];
+                                    $ocupadas = $ocupadas + $reserva->numero_canchas;
+                                    ?>
                                     <li>
                                         <a>
                                             ({{$reserva->id}}) {{User::where('id', $reserva->user_id)->get()[0]->name}}
@@ -68,7 +72,7 @@
                                         </a>
                                     </li>
                                 @endfor
-                                <?php $disponibles = 7 - $index ?>
+                                <?php $disponibles = 7 - $ocupadas ?>
                                 @if($disponibles == 0)
                                     <li><a>No quedan canchas <span class="btn btn-primary">disponibles</span></a></li>
                                 @elseif($disponibles == 1)
