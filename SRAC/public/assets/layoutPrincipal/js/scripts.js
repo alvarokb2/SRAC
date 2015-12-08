@@ -5,6 +5,11 @@ $(document).ready(function () {
     $('.datetimepicker').datetimepicker({
         mask: '9999/19/39 29:00'
     });
+    var noticias = $('.noticias .panel-body');
+    noticias.each(function (e) {
+        var html = $(this).html();
+        $(this).html(html.replace(/\n/igm, '<br>'));
+    });
 });
 
 (function () {
@@ -95,7 +100,6 @@ $(document).ready(function () {
             textBox.on('input', handler);
         });
         content.append(fg1).append(fg2).append(fg3);
-        content.hide(0);
         filterBtn.click(function (e) {
             animationOptions.contentToggle(content);
         });

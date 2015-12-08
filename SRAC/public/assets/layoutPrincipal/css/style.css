@@ -25,3 +25,9 @@
 table .btn {
     padding: 2px 10px 2px 10px;
 }
+
+.noticias .fecha {
+    float: right;
+    font-weight: bold;
+    font-size: 14px;
+}

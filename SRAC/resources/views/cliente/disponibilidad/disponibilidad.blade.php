@@ -5,8 +5,30 @@
 @section('user_contenido')
     <?php
     use SRAC\Reserva;
+    $user = Auth::user();
+    $user_status = $user->getStatus();
+    if ($user_status == 'suspendido') {
+        $fecha_perdida = DateTime::createFromFormat(
+            "Y-m-d H:i:s",
+            Reserva::where('user_id', $user->id)->where('estado', 'perdida')->orderBy('fecha_inicio', 'desc')->get()[0]->fecha_inicio
+        );
+        $fecha_habilitacion = new DateTime();
+        $fecha_habilitacion->setTimestamp($fecha_perdida->getTimestamp());
+        $fecha_habilitacion->add(new DateInterval('P5D'));
+    }
+    if ($user_status == 'pendiente') {
+        $fecha_pendiente = DateTime::createFromFormat(
+            "Y-m-d H:i:s",
+            Reserva::where('user_id', $user->id)->where('estado', 'pendiente')->orderBy('fecha_inicio', 'desc')->get()[0]->fecha_inicio
+        );
+    }
     $anio = date('Y'); $mes = date('m'); $dia = date('d');
     ?>
+    @if($user_status == 'suspendido')
+        @include('info.usuario_suspendido')
+    @elseif($user_status == 'pendiente')
+        @include('info.reservas_pendientes')
+    @endif
     <table class="table">
         <thead>
         <tr>
@@ -38,9 +60,15 @@
                         $estado = Reserva::getStatus($reserva);
                         ?>
                         @if($estado == 'disponible')
-                            <div class="btn btn-primary" data-toggle="modal" data-target="#modal{{$i}}-{{$j}}">
-                                Reservar
-                            </div>
+                            @if($user_status == 'suspendido' || $user_status == 'pendiente')
+                                <div class="btn btn-primary">
+                                    <strike>Reservar</strike>
+                                </div>
+                            @else
+                                <div class="btn btn-primary" data-toggle="modal" data-target="#modal{{$i}}-{{$j}}">
+                                    Reservar
+                                </div>
+                            @endif
                         @elseif($estado == 'no disponible')
                             <a class="btn btn-danger">No Disponible</a>
                         @else
