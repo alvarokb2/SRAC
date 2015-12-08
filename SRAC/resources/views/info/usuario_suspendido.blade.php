@@ -13,7 +13,7 @@
         </div>
         <div class="panel-body">
             <p>Las reservas realizadas y perdidas sin presentar una justificaci&oacute;n prudente, generan
-                una prohibici&oacute;n de realizar reservas por X d&iacute;as.
+                una prohibici&oacute;n de realizar reservas por <b class="badge">{{Utilidades::$dias_castigo}}</b> d&iacute;as.
             </p>
 
             <p>
