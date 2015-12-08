@@ -16,6 +16,14 @@ use SRAC\User;
 
 class ReservaController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth');
+        $this->middleware('cliente|socio', ['only' => 'store']);
+        $this->middleware('encargado|administrador', ['only' => ['storeMany', 'reservarLotes', 'update']]);
+    }
+
+
     /**
      * Display a listing of the resource.
      *

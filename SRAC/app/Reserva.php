@@ -2,8 +2,8 @@
 
 namespace SRAC;
 
-use Faker\Provider\tr_TR\DateTime;
 use Illuminate\Database\Eloquent\Model;
+use SRAC\Utilidades;
 
 
 class Reserva extends Model
@@ -119,6 +119,14 @@ class Reserva extends Model
         return $response;
     }
 
+    public static function cancelMany($fecha_inicio, $fecha_fin){
+        $reservas = Reserva::where('fecha_inicio', '>=', $reserva->fecha_inicio)
+            ->where('fecha_fin', '<=', $reserva->fecha_fin)
+            ->get();
+        foreach($reservas as $reserva){
+            $reserva->cancel();
+        }
+    }
 
     /**
      * @param : $reserva
@@ -127,7 +135,7 @@ class Reserva extends Model
      */
     public static function available($reserva){
         $actual = new \DateTime();
-        return Reserva::countMax($reserva) + $reserva->numero_canchas <= 3 && $reserva->fecha_inicio > $actual ;
+        return Reserva::countMax($reserva) + $reserva->numero_canchas <= Utilidades::$numero_canchas && $reserva->fecha_inicio > $actual ;
     }
 
     /**
@@ -142,21 +150,6 @@ class Reserva extends Model
                 if($aux->role != 'cancelada'){
                     $response = $response + $aux->numero_canchas;
                 }
-        }
-        return $response;
-    }
-
-    /**
-     * @param : $reserva
-     * @response : int
-     * devuelve el numero minimo de reservas en la interseccion     */
-    public static function countMin($reserva){
-        $rango = Reserva::getRange($reserva);
-        $response = 8;
-        foreach($rango as $aux){
-            if($response > $aux->numero_canchas){
-                $response = $aux->numero_canchas;
-            }
         }
         return $response;
     }

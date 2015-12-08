@@ -79,7 +79,7 @@ class User extends Model implements AuthenticatableContract,
      */
     public function available(){
         $actual = new \DateTime();
-        return !($this->isSanctioned(5) or $this->hasPending());
+        return !($this->isSanctioned(Utilidades::$numero_canchas) or $this->hasPending());
     }
 
     /**
@@ -102,7 +102,7 @@ class User extends Model implements AuthenticatableContract,
     }
 
     public function getStatus(){
-        if($this->isSanctioned(5)){
+        if($this->isSanctioned(Utilidades::$numero_canchas)){
             return 'suspendido';
         }
         elseif($this->hasPending()){

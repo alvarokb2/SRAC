@@ -94,6 +94,7 @@ Route::group(['prefix' => 'empleado'], function(){
             'update'    => 'empleado.usuarios.update',
         ]
     ]);
+
     Route::get('usuarios/destroy/{id}', [
         'uses'  => 'UsuarioController@destroy',
         'as'    => 'empleado.usuarios.destroy'

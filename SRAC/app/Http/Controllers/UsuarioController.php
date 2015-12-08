@@ -2,7 +2,6 @@
 
 namespace SRAC\Http\Controllers;
 
-use Faker\Provider\Barcode;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Session;
@@ -11,11 +10,15 @@ use SRAC\Http\Requests;
 use SRAC\Http\Requests\RegisterUserRequest;
 use SRAC\Http\Controllers\Controller;
 use SRAC\User;
-use SRAC\Reserva;
 
 
 class UsuarioController extends Controller
 {
+    public function __construct(){
+        $this->middleware('guest', ['only' => ['create' , 'store']]);
+        $this->middleware('encargado|administrador', ['except' => ['create', 'store']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

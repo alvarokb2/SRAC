@@ -29,5 +29,9 @@ class Kernel extends HttpKernel
         'auth' => \SRAC\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \SRAC\Http\Middleware\RedirectIfAuthenticated::class,
+        'cliente' => \SRAC\Http\Middleware\Cliente::class,
+        'socio' => \SRAC\Http\Middleware\Socio::class,
+        'encargado' => \SRAC\Http\Middleware\Encargado::class,
+        'administrador' => \SRAC\Http\Middleware\Administrador::class,
     ];
 }

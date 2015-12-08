@@ -12,6 +12,12 @@ use SRAC\Noticia;
 
 class NoticiaController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('administrador', ['except' => 'socioNoticias']);
+        $this->middleware('socio', ['only' => 'socioNoticias']);
+    }
+
     /**
      * Display a listing of the resource.
      *
