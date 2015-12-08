@@ -12,6 +12,7 @@
     {!! Html::script('assets/layoutPrincipal/js/jquery.min.js') !!}
     {!! Html::script('assets/layoutPrincipal/js/bootstrap.min.js') !!}
     {!! Html::script('assets/layoutPrincipal/js/jquery.datetimepicker.full.min.js') !!}
+    {!! Html::script('assets/layoutPrincipal/js/filterTable.js') !!}
     {!! Html::script('assets/layoutPrincipal/js/scripts.js') !!}
 </head>
 <body>
