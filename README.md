@@ -23,8 +23,8 @@ CREATE USER nombredeusuario PASSWORD 'password';<br>
 ALTER ROLE nombredeusuario WITH SUPERUSER; <br>
 #crear base de datos:
 CREATE DATABASE SRAC WITH OWNER nombredeusuario;<br>
-configurar la aplicación para funcionar<br>
-#modificar archivo .env en la raíz del proyecto
+#configurar la aplicación para funcionar
+modificar archivo .env en la raíz del proyecto<br>
 
 DB_HOST = localhost <br>
 DB_DATABASE= SRAC<br>
