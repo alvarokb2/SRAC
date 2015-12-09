@@ -41,7 +41,7 @@ class Reserva extends Model
         $user = User::findOrFail($reserva->user_id);
 
         $aux = $user->reservas()->where('fecha_inicio', '=', $reserva->fecha_inicio)
-            ->where('estado', '!=', 'cancelada')
+            //->where('estado', '!=', 'cancelada')
             ->get();
         if($aux->count() > 0){
             return $aux->first()->estado;
@@ -120,12 +120,40 @@ class Reserva extends Model
         return $response;
     }
 
-    public static function cancelMany($fecha_inicio, $fecha_fin){
-        $reservas = Reserva::where('fecha_inicio', '>=', $fecha_inicio)
-            ->where('fecha_fin', '<=', $fecha_fin)
-            ->get();
-        foreach($reservas as $reserva){
-            $reserva->cancel();
+    public static function cancelMany($fecha_inicio, $fecha_fin, $dias){
+
+        $fecha_inicio_int = $fecha_inicio->getTimestamp();
+        $fecha_fin_int = $fecha_fin->getTimestamp();
+
+        $anio = date('Y', $fecha_inicio_int);
+        $mes = date('m', $fecha_inicio_int);
+        $dia = date('d', $fecha_inicio_int);
+
+        $hora_inicio = date('H', $fecha_inicio_int);
+        $hora_fin = date('H', $fecha_fin_int);
+
+        $dias_int = floor(($fecha_fin_int - $fecha_inicio_int) / (60 * 60 *24));
+
+        for($dia_int = 0; $dia_int <= $dias_int; $dia_int++){
+            for($hora = $hora_inicio; $hora < $hora_fin; $hora++){
+                $fecha_inicio_aux = new \DateTime();
+                $fecha_fin_aux = new \DateTime();
+
+                $fecha_inicio_aux->setDate($anio, $mes, $dia + $dia_int);
+                $fecha_inicio_aux->setTime($hora, 0);
+
+                $fecha_fin_aux->setTimestamp($fecha_inicio_aux->getTimestamp());
+                $fecha_fin_aux->setTime($hora + 1, 0);
+                if(in_array(date('N', $fecha_inicio_aux->getTimestamp()), $dias)) {
+                    $reservas = Reserva::where('fecha_inicio' , '=', $fecha_inicio_aux)
+                        ->where('fecha_fin', '=', $fecha_fin_aux)->get();
+                    foreach($reservas as $reserva){
+                        if($reserva->estado != 'cancelada'){
+                            $reserva->cancel();
+                        }
+                    }
+                }
+            }
         }
     }
 

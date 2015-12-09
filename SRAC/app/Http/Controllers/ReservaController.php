@@ -143,7 +143,7 @@ class ReservaController extends Controller
 
         if($fecha_inicio >= $actual){
 
-            Reserva::cancelMany($fecha_inicio,$fecha_fin);
+            Reserva::cancelMany($fecha_inicio,$fecha_fin,$dias);
 
             $msg = 'Las reservas en el rango de fechas han sido canceladas';
 
