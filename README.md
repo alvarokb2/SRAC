@@ -26,7 +26,7 @@ CREATE DATABASE SRAC WITH OWNER nombredeusuario;
 configurar la aplicación para funcionar
 #modificar archivo .env en la raíz del proyecto
 
-DB_HOST = localhost
+DB_HOST = localhost <br>
 DB_DATABASE= SRAC
 DB_USERNAME= nombredeusuario
 DB_PASSWORD= password
