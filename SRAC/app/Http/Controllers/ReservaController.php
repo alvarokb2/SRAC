@@ -22,6 +22,7 @@ class ReservaController extends Controller
         $this->middleware('auth');
         $this->middleware('cliente', ['only' => 'store']);
         $this->middleware('encargado', ['only' => ['storeMany', 'reservarLotes', 'update']]);
+        $this->middleware('administrador', ['only' => ['cancelarReservas','cancelar']]);
     }
 
 
