@@ -1,5 +1,5 @@
 <div class="form-group">
-    <img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/"/>
+    <img src="{{asset('assets/layoutPrincipal/css/imagenes/mapa.jpg')}}"/>
 </div>
 {!! Form::open(['route' => 'login.store', 'method' => 'POST']) !!}
 <div class="form-group">

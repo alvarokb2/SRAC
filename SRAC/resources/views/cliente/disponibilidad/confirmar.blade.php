@@ -8,11 +8,6 @@
             <h3 class="modal-title">Confirmar Reserva</h3>
         </div>
         <div class="modal-body">
-            <div class="form-group">
-                <h4>&iquest; Desea confirmar la reserva ?</h4>
-                <p>Si conoce el reglamento de la compa&ntilde;ia y esta de acuerdo con los t&eacute;rminos de &eacute;ste presione el bot&oacute;n de confirmar.</p>
-                <p>Si no conoce el reglamento puede <b class="btn btn-info btn-xs">leer el reglamento aqu&iacute;</b>.</p>
-            </div>
             <hr>
             <div class="form-group">
                 {!! Form::label('Fecha de Inicio') !!}

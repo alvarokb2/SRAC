@@ -6,7 +6,6 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{route('/')}}">@lang('navbar.home')</a></li>
                 <li><a href="{{route('contact')}}">@lang('navbar.contact')</a></li>
-                <li><a href="{{route('test')}}">Test</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::user())
