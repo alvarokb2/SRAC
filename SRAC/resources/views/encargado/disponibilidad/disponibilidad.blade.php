@@ -63,7 +63,7 @@
                                 @for($index = 0; $index < $count; $index++)
                                     <?php
                                     $reserva = $reservas_aux[$index];
-                                    $estado = Reserva::getStatus($reserva);
+                                    $estado = $reserva->estado;
                                     $ocupadas = $ocupadas + ($estado == 'cancelada' ? 0 : $reserva->numero_canchas);
                                     ?>
                                     <li>
